@@ -44,12 +44,13 @@ Then just run the following:
 ansible-playbook main.yaml
 ```
 Once it completes, you should have the following: 
+|Item|Description|
 |-----:|---------------|
 |Oracle server|This is running <b>Oracle Database XE</b> (free version) with 3 PDBs - 1 for the Walman repository and 2 for testing Oracle wallets.|
 |Walman server|This is the <b>dbclient1</b>. It has the <b>Oracle client</b> as well as the <b>walman.py</b> program.|
 |Oracle client|This is an additional dbclient server. This is just here in case you want to demo <b>Walman</b> and remotely deploy/test your own Oracle wallet.|
 |WALMANDB|The <b>WALMANDB</b> pluggable database will be populated with some demo data to make trying <b>Walman</b> more useful and intuitive.|
-|1Password|Your walman_test vault in <b>1Password</b> will be populated with some demo data to make trying <b>Walman</b> more useful and intuitive.|
+|1Password|Your <b>walman_test</b> vault in <b>1Password</b> will be populated with some demo data to make trying <b>Walman</b> more useful and intuitive.|
 
 ### Execute Walman
 Once you have the lab environment all set up, you're ready to run <b>Walman</b> and give it a try.
