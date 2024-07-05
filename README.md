@@ -17,6 +17,8 @@ This portfolio consists of 3 parts:
 3. Ansible and other automation files to create a test environment to demo <b>Walman</b>.
 4. Documentation for <b>Walman</b>. This is both to allow anyone viewing my portfolio to better understand it as well as to highlight my technical writing ability.
 
+Please note that I have not used AI in the creation of any of the files found in this portfolio.
+
 ## What skills does this portfolio demonstrate?
 In alphabetical order, not by importance:
 |Skill|Sub-skill|
@@ -31,11 +33,16 @@ In alphabetical order, not by importance:
 ## How to use this portfolio
 Please feel free to just look at the code I have prepared. However, if you would like to actually try out <b>Walman</b> for yourself, please follow these steps to get it up an running on your own lab environment.
 
-### Requirements/Assumptions
+### Requirements
 To use the <b>Walman</b> demo, you will need to have the following in place:
-- Three VMs - 2 with RHEL9 and 1 with RHEL8. I intend to provide sometime soon a Bash script which will automatically provision these in VirtualBox.
-- Separate Linux host or workstation with Ansible configured and able to connect to the 3 VMs without a password and with nopasswd sudo access.
+- Three VMs
+  - 1 with RHEL8 (dbserver) - 2048GB RAM, 30GB storage
+  - 2 with RHEL9 (dbclients1/2) - 2048GB RAM, 20GB storage
+  - I intend to provide sometime soon a Bash script which will automatically provision these in VirtualBox.
+- Separate Linux host or workstation with Ansible controller configured and able to connect to the 3 VMs without a password and with nopasswd sudo access.
 - Account on 1password.com with a vault called <b>wallman_test</b> and a Service Account which has access to make changes in that vault. I have provided a guide on how to do this here: #<<link to the guide here when it's ready>>#
+- Updated the <b>ansible/vars/walmanvars.yaml</b> file with a value for onepass_token (token for your 1password Service Account).
+- Updated the <b>ansible/vars/walmanvars.yaml</b> file with a value for ansible_running_account (local account running Ansible on the controller).
 
 ### Configure the test environment
 Once you have the above requirements in place, the Ansible project I have provided will take care of the rest. But before you use it, update the <b>inventory</b> file with the names of your hosts. The dbserver should be the RHEL8 VM. The two dbclient servers should be RHEL9.
