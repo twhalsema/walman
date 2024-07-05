@@ -26,6 +26,7 @@ In alphabetical order, not by importance:
 |Linux|Automation, Environment, Installation, Networking, Security|
 |Oracle database|DDL, DML, Installation, Multi-tenancy, Security, SQL, SQLnet, Wallets|
 |Python|Database queries, Data structures, File manipulation, SSH connections, User interface|
+|Technical Writing||
 
 ## How to use this portfolio
 Please feel free to just look at the code I have prepared. However, if you would like to actually try out <b>Walman</b> for yourself, please follow these steps to get it up an running on your own lab environment.
@@ -34,7 +35,7 @@ Please feel free to just look at the code I have prepared. However, if you would
 To use the <b>Walman</b> demo, you will need to have the following in place:
 - Three VMs - 2 with RHEL9 and 1 with RHEL8. I intend to provide sometime soon a Bash script which will automatically provision these in VirtualBox.
 - Separate Linux host or workstation with Ansible configured and able to connect to the 3 VMs without a password and with nopasswd sudo access.
-- Account on 1password.com with a vault called <b>wallman_test</b> and a Service Account which has access to make changes in that vault. I have provided a guide on how to do this here: #<<link to the guide when it's ready>>#
+- Account on 1password.com with a vault called <b>wallman_test</b> and a Service Account which has access to make changes in that vault. I have provided a guide on how to do this here: #<<link to the guide here when it's ready>>#
 
 ### Configure the test environment
 Once you have the above requirements in place, the Ansible project I have provided will take care of the rest. But before you use it, update the <b>inventory</b> file with the names of your hosts. The dbserver should be the RHEL8 VM. The two dbclient servers should be RHEL9.
@@ -42,5 +43,19 @@ Then just run the following:
 ```bash
 ansible-playbook main.yaml
 ```
+Once it completes, you should have the following: 
+|-----:|---------------|
+|Oracle server|This is running <b>Oracle Database XE</b> (free version) with 3 PDBs - 1 for the Walman repository and 2 for testing Oracle wallets.|
+|Walman server|This is the <b>dbclient1</b>. It has the <b>Oracle client</b> as well as the <b>walman.py</b> program.|
+|Oracle client|This is an additional dbclient server. This is just here in case you want to demo <b>Walman</b> and remotely deploy/test your own Oracle wallet.|
+|WALMANDB|The <b>WALMANDB</b> pluggable database will be populated with some demo data to make trying <b>Walman</b> more useful and intuitive.|
+|1Password|Your walman_test vault in <b>1Password</b> will be populated with some demo data to make trying <b>Walman</b> more useful and intuitive.|
 
-
+### Execute Walman
+Once you have the lab environment all set up, you're ready to run <b>Walman</b> and give it a try.
+To do so, log in to the <b>dbclient1</b> server as the <b>oracle</b> account.
+Then run the following:
+```bash
+python walman.py
+```
+For full instructions on how to use Walman, please see this document: #<<link to the document here when it's ready>>#
