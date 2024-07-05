@@ -35,7 +35,10 @@ Please feel free to just look at the code I have prepared. However, if you would
 
 ### Requirements
 To use the <b>Walman</b> demo, you will need to have the following in place:
-- Three VMs - 2 with RHEL9 and 1 with RHEL8. I intend to provide sometime soon a Bash script which will automatically provision these in VirtualBox.
+- Three VMs
+  - 1 with RHEL8 (dbserver) - 2048GB RAM, 30GB storage
+  - 2 with RHEL9 (dbclients1/2) - 2048GB RAM, 20GB storage
+  - I intend to provide sometime soon a Bash script which will automatically provision these in VirtualBox.
 - Separate Linux host or workstation with Ansible controller configured and able to connect to the 3 VMs without a password and with nopasswd sudo access.
 - Account on 1password.com with a vault called <b>wallman_test</b> and a Service Account which has access to make changes in that vault. I have provided a guide on how to do this here: #<<link to the guide here when it's ready>>#
 - Updated the <b>ansible/vars/walmanvars.yaml</b> file with a value for onepass_token (token for your 1password Service Account).
