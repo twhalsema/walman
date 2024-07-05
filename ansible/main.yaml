@@ -69,7 +69,7 @@
       state: present
   - name: Configure oracle user for ssh from ansible control
     authorized_key:
-      key: "{{ lookup('file', '/home/tom/.ssh/id_rsa.pub') }}"
+      key: "{{ lookup('file', '/home/{{ ansible_running_account }}/.ssh/id_rsa.pub') }}"
       user: oracle
       state: present
   - name: Configure sudo for oracle user
