@@ -26,3 +26,17 @@ In alphabetical order, not by importance:
 |Linux|Automation, Environment, Installation, Networking, Security|
 |Oracle database|DDL, DML, Installation, Multi-tenancy, Security, SQL, SQLnet, Wallets|
 |Python|Database queries, Data structures, File manipulation, SSH connections, User interface|
+
+## How to use this portfolio
+Please feel free to just look at the code I have prepared. However, if you would like to actually try out <b>Walman</b> for yourself, please follow these steps to get it up an running on your own lab environment.
+
+### Requirements/Assumptions
+To use the <b>Walman</b> demo, you will need to have the following in place:
+- Three VMs - 2 with RHEL9 and 1 with RHEL8. I intend to provide sometime soon a Bash script which will automatically provision these in VirtualBox.
+- Separate Linux host or workstation with Ansible configured and able to connect to the 3 VMs without a password and with nopasswd sudo access.
+
+### Configure the test environment
+Once you have the above requirements in place, the Ansible project I have provided will take care of the rest. But before you use it, update the <b>inventory</b> file with the names of your hosts. The dbserver should be the RHEL8 VM. The two dbclient servers should be RHEL9.
+
+
+
