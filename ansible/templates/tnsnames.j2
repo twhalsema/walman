@@ -1,0 +1,11 @@
+WALMANDB_WALMAN =
+ (DESCRIPTION =
+   (ADDRESS_LIST =
+{% for host in groups['oracledb'] %}
+     (ADDRESS = (PROTOCOL = TCP)(Host = {{ hostvars[host]["ansible_fqdn"] }})(Port = 1521))
+{% endfor %}
+   )
+ (CONNECT_DATA =
+   (SERVICE_NAME = walmandb)
+ )
+)

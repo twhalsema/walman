@@ -1,0 +1,288 @@
+---
+- name: Configure /etc/hosts for all managed hosts
+  import_playbook: playbooks/etc_hosts_setup.yaml
+
+- name: Configure host for WALMANDB example database
+  hosts: oracledb
+  vars_files:
+  - vars/oracle_password.yaml
+  tasks:
+  - name: Create directory to download Oracle packages to
+    file:
+      path: /oracle_rpms
+      state: directory
+  - name: Determine if Oracle pre-install package already exists on disk
+    stat:
+      path: /oracle_rpms/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
+    register: preinstallstat
+  - name: Determine if Oracle install package already exists on disk
+    stat:
+      path: /oracle_rpms/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
+    register: installstat
+  - name: Download the Oracle pre-install package
+    get_url:
+      url: https://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/getPackage/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
+      dest: /oracle_rpms
+    when: preinstallstat['stat']['exists'] == false
+  - name: Download the Oracle XE install package
+    get_url:
+      url: https://download.oracle.com/otn-pub/otn_software/db-express/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
+      dest: /oracle_rpms
+    when: installstat['stat']['exists'] == false
+  - name: Install Oracle packages
+    dnf:
+      name: 
+      - /oracle_rpms/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
+      - /oracle_rpms/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
+      disable_gpg_check: true
+      state: present
+  - name: Disable firewalld
+    service:
+        name: firewalld
+        state: stopped
+        enabled: false
+  - name: Create home directory for oracle user
+    shell:
+      cmd: mkhomedir_helper oracle
+  - name: Create xe_logs directory
+    file:
+      path: /xe_logs
+      owner: oracle
+      group: oinstall
+      state: directory
+  - name: Find if oracle is already configured
+    stat:
+      path: /opt/oracle/oradata
+    register: oradatastat
+  - name: Run the Oracle configuration
+    shell:
+      cmd: (echo "{{ oracle_password }}"; echo "{{ oracle_password }}";) | /etc/init.d/oracle-xe-21c configure >> /xe_logs/XEsilentinstall.log 2>&1
+    when: oradatastat['stat']['exists'] == false
+  - name: Add Oracle env variables to .bashrc
+    blockinfile:
+      path: /home/oracle/.bashrc
+      block: |
+        export ORACLE_BASE=/opt/oracle
+        export ORACLE_HOME=${ORACLE_BASE}/product/21c/dbhomeXE
+        export ORACLE_SID=XE
+        export PATH=${ORACLE_HOME}/bin:${PATH}
+      state: present
+  - name: Configure oracle user for ssh from ansible control
+    authorized_key:
+      key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
+      user: oracle
+      state: present
+  - name: Configure sudo for oracle user
+    copy:
+      content: "oracle ALL=(ALL) NOPASSWD:ALL"
+      dest: /etc/sudoers.d/oracle
+  - name: Set password for Oracle user
+    user:
+      name: oracle
+      password: "$6$RyZfRVfDEyn1Gbgd$WsMPOwUv/da8xrj5GrPm5PsAwroTNhWUg19f.sLgvzfyyOLLz/yEcaoRnpP3woiGvUNdwpZkVLAMmWb0DvFFo1"
+      state: present
+
+- name: Configure Oracle user on dbclients
+  hosts: dbclients
+  tasks:
+  - name: Create oinstall group
+    group:
+      name: oinstall
+      gid: 54321
+      state: present
+  - name: Create oracle user
+    user:
+      name: oracle
+      uid: 54321
+      group: oinstall
+      state: present
+      password: "$6$RyZfRVfDEyn1Gbgd$WsMPOwUv/da8xrj5GrPm5PsAwroTNhWUg19f.sLgvzfyyOLLz/yEcaoRnpP3woiGvUNdwpZkVLAMmWb0DvFFo1"
+  - name: Configure sudo for oracle user
+    copy:
+      content: "oracle ALL=(ALL) NOPASSWD:ALL"
+      dest: /etc/sudoers.d/oracle   
+
+- name: Configure Oracle client software on dbclients
+  hosts: dbclients
+  become_user: oracle
+  tags: ora_client_setup
+  tasks:
+  - name: Determine if Oracle client package already exists on disk
+    stat:
+      path: /home/oracle/LINUX.X64_234000_client_home.zip
+    register: oraclientstat
+  - name: Download Oracle client
+    get_url:
+      url: https://download.oracle.com/otn_software/linux/instantclient/23c/LINUX.X64_234000_client_home.zip
+      dest: /home/oracle/LINUX.X64_234000_client_home.zip
+      mode: '0660'
+    when: oraclientstat['stat']['exists'] == false
+  - name: Create oracle_client directory
+    file:
+        path: /home/oracle/oracle_client
+        state: directory
+  - name: Unzip Oracle client
+    unarchive:
+      remote_src: true
+      src: /home/oracle/LINUX.X64_234000_client_home.zip
+      dest: /home/oracle/oracle_client
+  - name: Set env variables for Oracle client and Java
+    blockinfile:
+      path: /home/oracle/.bashrc
+      block: |
+        export ORACLE_HOME=/home/oracle/oracle_client
+        export JAVA_HOME=${ORACLE_HOME}/jdk
+        export PATH=${ORACLE_HOME}/bin:${JAVA_HOME}/bin:${PATH}
+      state: present
+
+- name: Create and populate PDBs in the XE CDB and configure 1Password
+  hosts: oracledb
+  remote_user: oracle
+  become: no
+  vars_files:
+  - vars/oracle_password.yaml
+  - vars/walmanvars.yaml
+  tasks:
+  - name: Create script to create PDBs
+    copy:
+      content: |
+        CREATE PLUGGABLE DATABASE {{ item.dbname }}
+        ADMIN USER {{ item.dbadmin }} IDENTIFIED BY {{ oracle_password }}
+        ROLES = (dba)
+        DEFAULT TABLESPACE {{ item.dbtbsp }}
+        DATAFILE '/opt/oracle/oradata/XE/{{ item.dbname }}/{{ item.dbdatafile }}' SIZE {{ item.dbsize }} AUTOEXTEND ON
+        FILE_NAME_CONVERT = ('/opt/oracle/oradata/XE/pdbseed/','/opt/oracle/oradata/XE/{{ item.dbname }}/');
+        ALTER PLUGGABLE DATABASE {{ item.dbname }} OPEN;
+        ALTER PLUGGABLE DATABASE {{ item.dbname }} SAVE STATE;
+        exit;
+      dest: "/tmp/{{ item.dbname }}.sql"
+    loop: "{{ pdbs }}"
+  - name: Create the PDBs using the scripts
+    shell:
+      cmd: "sqlplus -s / as sysdba @/tmp/{{ item['dbname'] }}.sql"
+    loop: "{{ pdbs }}"
+    register: pdbcreateoutput
+  - name: Show the output of the PDB creation
+    debug:
+      msg: "Commands: {{ item['cmd'] }} \n Results: {{ item['stdout_lines'] }}"
+    loop: "{{ pdbcreateoutput['results'] }}"
+  - name: Remove the PDB creation scripts
+    file:
+      path: "/tmp/{{ item['dbname'] }}.sql"
+      state: absent
+    loop: "{{ pdbs }}"
+  - name: Generate PDB data population script
+    template:
+      src: templates/populate_dbs.j2
+      dest: /tmp/populate_dbs.sql
+  - name: Run the PDB data population script
+    shell:
+      cmd: "sqlplus -s / as sysdba @/tmp/populate_dbs.sql"
+    register: pdbpopoutput
+  - name: Show the output of the PDB data population
+    debug:
+      var: pdbpopoutput
+  - name: Remove the PDB data population script
+    file:
+      path: /tmp/populate_dbs.sql
+      state: absent
+
+- name: Configure first client for Oracle, 1Password, and Python
+  hosts: dbclient1
+  vars_files:
+  - vars/walmanvars.yaml
+  tasks:
+  - name: Add 1Password service account to bashrc
+    lineinfile:
+      path: /home/oracle/.bashrc
+      regexp: "^export OP_SERVICE_ACCOUNT_TOKEN="
+      line: "export OP_SERVICE_ACCOUNT_TOKEN={{ onepass_token }}"
+      state: present
+  - name: Configure repo for 1password
+    yum_repository:
+      baseurl: https://downloads.1password.com/linux/rpm/stable/$basearch
+      enabled: true
+      description: onepassword_stable_channel
+      gpgcheck: true
+      gpgkey: https://downloads.1password.com/linux/keys/1password.asc
+      name: onepassword_stable_channel
+      repo_gpgcheck: true
+      state: present
+  - name: Install python, git, pip, and 1password-cli
+    dnf:
+      name:
+      - python
+      - git
+      - pip
+      - 1password-cli
+      state: latest
+  - name: Install Python packages
+    pip:
+      name: 
+      - git+https://github.com/1Password/onepassword-sdk-python.git@v0.1.0-beta.9
+      - colorama
+      - oracledb
+      - paramiko
+      - sh
+      state: present
+  - name: Create directory for Oracle wallet for WALMANDB connection
+    file:
+      path: /home/oracle/wallets/walman_wallet/tns_admin/wallet
+      state: directory
+      owner: oracle
+      group: oinstall
+  - name: Create sqlnet.ora file
+    copy:
+      content: |
+        NAMES.DIRECTORY_PATH=(TNSNAMES,EZCONNECT)
+        SQLNET.WALLET_OVERRIDE=TRUE
+        WALLET_LOCATION=(SOURCE=(METHOD=FILE)(METHOD_DATA=(DIRECTORY=/home/oracle/wallets/walman_wallet/tns_admin/wallet)))
+      dest: /home/oracle/wallets/walman_wallet/tns_admin/sqlnet.ora
+      owner: oracle
+      group: oinstall
+  - name: Create tnsnames.ora file
+    template:
+      src: templates/tnsnames.j2
+      dest: /home/oracle/wallets/walman_wallet/tns_admin/tnsnames.ora
+      owner: oracle
+      group: oinstall
+  - name: Copy walmandb wallet
+    unarchive:
+      src: files/wallet.tar
+      dest: /home/oracle/wallets/walman_wallet/tns_admin
+  - name: Set new default TNS_ADMIN to allow use of WALMANDB_WALMAN Oracle wallet entry
+    lineinfile:
+      path: /home/oracle/.bashrc
+      line: export TNS_ADMIN=/home/oracle/wallets/walman_wallet/tns_admin
+      state: present
+  - name: Deploy copy of wallet_test.sh
+    copy:
+      src: files/wallet_test.sh
+      dest: /home/oracle/wallets/wallet_test.sh
+      owner: oracle
+      group: oinstall
+      mode: '0750'
+
+- name: Configure 1Password test data
+  hosts: dbclient1
+  vars_files:
+  - vars/walmanvars.yaml
+  become_user: oracle
+  tags: op_setup
+  tasks:
+  - name: Verify 1password vault access
+    shell:
+      cmd: ". /home/oracle/.bashrc; op vault list | grep walman_test | tr -s ' ' | cut -d' ' -f2"
+    register: op_vault_verify
+  - name: Verify if 1password data already loaded
+    shell:
+      cmd: ". /home/oracle/.bashrc; op item list --vault=walman_test | grep -v EDITED | wc -l"
+    register: op_item_count
+    when: op_vault_verify['stdout'] == 'walman_test'
+  - name: Load 1password test data into walman_test vault
+    script:
+      cmd: files/op_load_test_data.sh
+    when: op_item_count['stdout'] < "10"
+
+- name: Include playbook for ssh configuration between the hosts
+  import_playbook: playbooks/ssh_setup.yaml
