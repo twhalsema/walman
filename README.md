@@ -10,6 +10,7 @@ At the time of writing (July 2024), I am currently looking for a new job. I have
 - Infrastructure Engineer
 
 I encourage anyone considering me for employment to look over this portfolio to make a more informed hiring decision.
+Please note that I have not used AI in the creation of any of the files found in this portfolio.
 
 ## What is in this portfolio?
 This portfolio consists of 3 parts:
