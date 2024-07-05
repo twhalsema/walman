@@ -13,9 +13,9 @@ I encourage anyone considering me for employment to look over this portfolio to 
 
 ## What is in this portfolio?
 This portfolio consists of 3 parts:
-1. <b>Walman</b> (short for Wallet Manager) - A python program which allows the user to declaratively build Oracle wallets (database credential stores) and deploy them to remove database client servers.
-2. Ansible and other automation files to create a test environment to demo <b>Walman</b>.
-3. Documentation for <b>Walman</b>. This is both to allow anyone viewing my portfolio to better understand it as well as to highlight my technical writing ability.
+1. <b>Walman</b> (short for Wallet Manager) - A Python program which allows the user to declaratively define Oracle wallets (database credential stores), populate them with credentials from 1password.com, and deploy the wallets to remove database client servers. (This allows centralized management of DB connection info for services to allow for easier password rotation.)
+3. Ansible and other automation files to create a test environment to demo <b>Walman</b>.
+4. Documentation for <b>Walman</b>. This is both to allow anyone viewing my portfolio to better understand it as well as to highlight my technical writing ability.
 
 ## What skills does this portfolio demonstrate?
 In alphabetical order, not by importance:
@@ -34,9 +34,13 @@ Please feel free to just look at the code I have prepared. However, if you would
 To use the <b>Walman</b> demo, you will need to have the following in place:
 - Three VMs - 2 with RHEL9 and 1 with RHEL8. I intend to provide sometime soon a Bash script which will automatically provision these in VirtualBox.
 - Separate Linux host or workstation with Ansible configured and able to connect to the 3 VMs without a password and with nopasswd sudo access.
+- Account on 1password.com with a vault called <b>wallman_test</b> and a Service Account which has access to make changes in that vault. I have provided a guide on how to do this here: #<<link to the guide when it's ready>>#
 
 ### Configure the test environment
 Once you have the above requirements in place, the Ansible project I have provided will take care of the rest. But before you use it, update the <b>inventory</b> file with the names of your hosts. The dbserver should be the RHEL8 VM. The two dbclient servers should be RHEL9.
-
+Then just run the following:
+```bash
+ansible-playbook main.yaml
+```
 
 
