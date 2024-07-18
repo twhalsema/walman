@@ -49,15 +49,29 @@ This will run the application and present you with the Main Menu.
 ### Main Menu
 |Option|Description|
 |-----:|---------------|
-|Wallets - Create Wallet|Allows the user to store a new Wallet record. This will not create an actual Oracle wallet yet.|
-|Wallets - View/Manage Existing Wallet|Prompts the user to enter a search term and select a Wallet. The screen will allow the user to view the Wallet's info, modify it, or generate an Oracle wallet from it.|
-|Credentials - Manage Credentials|Presents a menu for additional options for Credential records.|
+|Wallets - Create Wallet|Form for the user to store a new Wallet record. This will not create an actual Oracle wallet yet.|
+|Wallets - View/Manage Existing Wallet|Prompts the user to enter a search term and select a Wallet. Presents a menu for the user to view the Wallet's info, modify it, or generate/deploy an Oracle wallet from it.|
+|Credentials - Manage Credentials|Presents a menu for additional options for Credentials.|
 
 ### Wallets - Create Wallet
-[incomplete]
+|Prompt|Description|
+|-----:|---------------|
+|Wallet Name / Passmgr Entry|This is the name of the Wallet in Walmgr. It will also be the name of the 1Password entry which stores the password for the Oracle wallet generated later. All Wallets' names start with "WALLET - "|
+|Wallet Description|This is just a description the user can use to remember the purpose of the Wallet.|
 
 ### Wallets - Manage Wallet
-[incomplete]
+The user will be prompted for a search term. This is just to narrow down the list of Wallets to choose from. Leave the prompt blank to see all Wallets listed if needed. Then select a Wallet from the list.
+
+|Option|Description|
+|-----:|---------------|
+|View Wallet Details|Lists the Wallet's information (e.g. Name, Description, local directory where an Oracle wallet has been generated for it, Credentials added to it, Sites assigned to it.)|
+|Generate/Deploy Wallet|Navigates to a menu with additional options for generating and deploying an actual Oracle wallet for the Wallet.|
+|Credentials - Add to Wallet|Form to add Credentials to the Wallet. The Credentials must already have been created via the Credentials - Manage Credentials menu.|
+|Credentials - Remove from Wallet|Form to remove Credentials from the Wallet if any have been previously added.|
+|Sites - Assign to Wallet|Form to create a Site and assign it to the Wallet. |
+|Sites - Unassign from Wallet|Form to unassign a Site from a Wallet and delete it.|
+|Delete Wallet|Prompts for confirmation before deleting a Wallet and all of its associated Sites. Credentials are not deleted, but they are removed from the Wallet record.|
+
 
 ### Wallets - Manage Wallet - Generate/Deploy Wallet
 [incomplete]
