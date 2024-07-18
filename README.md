@@ -5,7 +5,7 @@
 In addition to <b>Walman</b> itself - Ansible files, other automations, and documentation - are provided to allow you to test the program with sample data/credentials.
 
 ## Glossary
-The following terms will be used throughout this document. Familiarize yourself with them before continuing.
+The following terms will be used throughout this document.
 
 |Term|Description|
 |-----:|---------------|
@@ -14,7 +14,7 @@ The following terms will be used throughout this document. Familiarize yourself 
 |Site|A record stored in the <b>Walman</b> database which repesents a server and directory. When assigned to a <b>Wallet</b>, the generated <b>Oracle wallet</b> will be deployed to that server/directory.|
 |Wallet|When the word <b>Wallet</b> is used on its own (instead of <b>Oracle wallet</b>), it is a record stored in the <b>Walman</b> database which represents an Oracle wallet which can be generated and deployed. Each <b>Wallet</b> has a 1password entry associated with it. This is the password used when creating/modifying the <b>Oracle wallet</b>.|
 
-## Installing Walman
+## Install Walman
 There are 2 components to Walman:
 1. Walman database
 2. walman.py
@@ -35,7 +35,7 @@ pip install sh
 ## Walman Database ERD
 [incomplete]
 
-## Running Walman
+## Run Walman
 [incomplete]
 
 ### Main Menu
