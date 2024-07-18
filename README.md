@@ -5,33 +5,33 @@
 In addition to <b>Walman</b> itself - Ansible files, other automations, and documentation - are provided to allow you to test the program with sample data/credentials.
 
 ## Glossary
-<<incomplete>>
+[incomplete]
 
 ## Installing Walman
-<<incomplete>>
+[incomplete]
 
 ## Running Walman
-<<incomplete>>
+[incomplete]
 
 ### Main Menu
-<<incomplete>>
+[incomplete]
 
 ### Wallets - Create Wallet
-<<incomplete>>
+[incomplete]
 
 ### Wallets - Manage Wallet
-<<incomplete>>
+[incomplete]
 
 ### Wallets - Manage Wallet - Generate/Deploy Wallet
-<<incomplete>>
+[incomplete]
 
 ### Credentials - Manage Credentials
-<<incomplete>>
+[incomplete]
 
 
 
 ## Walman Demonstration
-<<incomplete>>
+[incomplete]
 
 ## Requirements
 To use the <b>Walman</b> demo, you will need to have the following in place:
