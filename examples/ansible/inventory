@@ -1,0 +1,12 @@
+[oracledb]
+walmandbserv
+
+[dbclient1]
+walmandbclient1
+
+[dbclientothers]
+walmandbclient2
+
+[dbclients:children]
+dbclient1
+dbclientothers
