@@ -2,7 +2,7 @@
 ## Overview
 <b>Walman</b> is a python script which stores information about Oracle wallets in a database and uses that information to generate Oracle wallet files, populate them with credentials pulled from 1password.com, and deploy those Oracle wallets to desired servers/directories.
 
-In addition to <b>Walman</b> itself, a [Walman Demo](https://github.com/twhalsema/walman/view/main/README.md#walman-demo) (Ansible files, other automations, and documentation) is provided to allow you to test the program with sample data/credentials.
+In addition to <b>Walman</b> itself, a [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo) (Ansible files, other automations, and documentation) is provided to allow you to test the program with sample data/credentials.
 
 ## Glossary
 The following terms will be used throughout this document.
@@ -15,7 +15,7 @@ The following terms will be used throughout this document.
 |Wallet|When the word <b>Wallet</b> is used on its own (instead of <b>Oracle wallet</b>), it is a record stored in the <b>Walman</b> database which represents an Oracle wallet which can be generated and deployed. Each <b>Wallet</b> has a 1password entry associated with it. This is the password used when creating/modifying the <b>Oracle wallet</b>.|
 
 ## Install Walman
-NOTE: This section is for installing <b>Walman</b> manually. For automated install and sample data population, see [Walman Demo](https://github.com/twhalsema/walman/edit/main/README.md#walman-demo)
+NOTE: This section is for installing <b>Walman</b> manually. For automated install and sample data population, see [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo)
 
 There are 2 components to <b>Walman</b>:
 1. Walman database
