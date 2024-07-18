@@ -49,8 +49,8 @@ This will run the application and present you with the Main Menu.
 ### Main Menu
 |Option|Description|
 |-----:|---------------|
-|Wallets - Create Wallet|Screen where you can store a new Wallet record. This will not create an actual Oracle wallet yet.|
-|Wallets - View/Manage Existing Wallet|This will prompt you to enter a search term and select a Wallet. The screen will allow you to view the Wallet's info, modify it, or generate an Oracle wallet from it.|
+|Wallets - Create Wallet|Allows the user to store a new Wallet record. This will not create an actual Oracle wallet yet.|
+|Wallets - View/Manage Existing Wallet|Prompts the user to enter a search term and select a Wallet. The screen will allow the user to view the Wallet's info, modify it, or generate an Oracle wallet from it.|
 |Credentials - Manage Credentials|Presents a menu for additional options for Credential records.|
 
 ### Wallets - Create Wallet
