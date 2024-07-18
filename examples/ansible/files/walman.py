@@ -1,4 +1,4 @@
-##############################################3
+##############################################
 # Author: Thomas Halsema
 # Description: 
 #    This program stores information about Oracle Wallets in a centralized repository database. Users can create, update, delete, and view the information stored.
@@ -20,6 +20,7 @@ import time
 # Global Variables
 search_string = ""
 local_wallets_directory = "/home/oracle/wallets"
+walman_vault = "walman_test"
 
 def confirm_yes_no(prompt_in: str) -> bool:
 
@@ -891,7 +892,7 @@ def passmgr_search(tag: str, search_prompt: bool, search_string_in: str) -> list
         
         
         # Query the Passmgr to get a list of entries containing the Search String
-        run_proc_results = subprocess.run(f"op item list --vault walman_test --tags {tag} --format json", shell=True, check=True, capture_output=True, encoding='utf-8').stdout
+        run_proc_results = subprocess.run(f"op item list --vault {walman_vault} --tags {tag} --format json", shell=True, check=True, capture_output=True, encoding='utf-8').stdout
         search_results_raw = json.loads(run_proc_results)
         search_results = [x for x in search_results_raw if search_string.lower() in x["title"].lower()]
         
@@ -938,7 +939,7 @@ def wallet_create(wallet_name: str, wallet_description: str):
         if len(search_results) == 0:
             # No entry in Passmgr for this wallet_name, so create it in Passmgr with random password
             try:
-                results = subprocess.run(f"op item create --title=\"{wallet_name}\" --category=login --tags=wallet --vault=walman_test username=\"{wallet_name}\" --generate-password='letters,digits,symbols,16'", shell=True, check=True, capture_output=True, encoding='utf-8')
+                results = subprocess.run(f"op item create --title=\"{wallet_name}\" --category=login --tags=wallet --vault={walman_vault} username=\"{wallet_name}\" --generate-password='letters,digits,symbols,16'", shell=True, check=True, capture_output=True, encoding='utf-8')
             except:
                 print(f"{Fore.RED}ERROR:{Fore.RESET} Error encountered while creating record for {Fore.YELLOW}[{wallet_name}]{Fore.RESET} in the Passmgr. Cancelling Wallet creation.")
                 return
@@ -1193,13 +1194,13 @@ def wallet_generate_locally(wallet_id: int, wallet_name: str, wallet_test: bool)
                                     "cred_db_host_name":  query_cred[1],
                                     "cred_db_port":  query_cred[2],
                                     "cred_db_service":  query_cred[3],
-                                    "cred_username": subprocess.run(f"op item get \"{query_cred[4]}\" --vault=walman_test --fields username | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip(),
-                                    "cred_password": subprocess.run(f"op item get \"{query_cred[4]}\" --vault=walman_test --fields password | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip(), }
+                                    "cred_username": subprocess.run(f"op item get \"{query_cred[4]}\" --vault={walman_vault} --fields username | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip(),
+                                    "cred_password": subprocess.run(f"op item get \"{query_cred[4]}\" --vault={walman_vault} --fields password | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip(), }
         wallet_creds.append(wallet_cred)
     print(f"{Fore.BLUE}INFO:{Fore.RESET} Retrieved Credential data from WALMANDB and the Passmgr")
     
     # Retrieve the Wallet's password from the Passmgr
-    wallet_password = subprocess.run(f"op item get \"{wallet_name}\" --vault=walman_test --fields password | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip()
+    wallet_password = subprocess.run(f"op item get \"{wallet_name}\" --vault={walman_vault} --fields password | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip()
     print(f"{Fore.BLUE}INFO:{Fore.RESET} Retrieved Wallet password from the Passmgr")
     
     # Generate the local Wallet files
