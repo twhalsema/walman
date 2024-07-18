@@ -17,13 +17,13 @@ The following terms will be used throughout this document.
 ## Install Walman
 NOTE: This section is for installing <b>Walman</b> manually. For automated install and sample data population, see [Walman Demo](https://github.com/twhalsema/walman/edit/main/README.md#walman-demo)
 
-There are 2 components to Walman:
+There are 2 components to <b>Walman</b>:
 1. Walman database
 2. walman.py
 
 To set up the <b>Walman</b> database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, use the <b>Walman Database ERD</b> provided below to build the table structure. Alternatively, the SQL DDL to create the tables can be found in <b>examples/ansible/templates/populate_dbs.j2</b>. Just ignore the INSERT statements.
 
-To install <b>walman.py</b>, copy the file to whatever server you intend to use as your Walman client. 
+To install <b>walman.py</b>, copy the file to whatever server you intend to use as your <b>Walman</b> client. 
 Then run the following commands to install Python and the necessary packages.
 ```
 dnf install python3
@@ -68,13 +68,23 @@ The user will be prompted for a search term. This is just to narrow down the lis
 |Generate/Deploy Wallet|Navigates to a menu with additional options for generating and deploying an actual Oracle wallet for the Wallet.|
 |Credentials - Add to Wallet|Form to add Credentials to the Wallet. The Credentials must already have been created via the Credentials - Manage Credentials menu.|
 |Credentials - Remove from Wallet|Form to remove Credentials from the Wallet if any have been previously added.|
-|Sites - Assign to Wallet|Form to create a Site and assign it to the Wallet. |
+|Sites - Assign to Wallet|Form to create a Site and assign it to the Wallet.|
 |Sites - Unassign from Wallet|Form to unassign a Site from a Wallet and delete it.|
 |Delete Wallet|Prompts for confirmation before deleting a Wallet and all of its associated Sites. Credentials are not deleted, but they are removed from the Wallet record.|
 
+### Wallets - Modify Wallet - Assign Site
+|Prompt|Description|
+|-----:|---------------|
+|Site Host Name|The name of a server to which the Oracle wallet should be deployed later.|
+|Site Directory|The directory where the Oracle wallet will reside on that server.|
+|Site Owner|The os account which will own the Oracle wallet files. The server/account running <b>Walman</b> must be able to ssh to the Site Host Name as Site Owner without a password before deploying the Oracle wallet.|
 
-### Wallets - Manage Wallet - Generate/Deploy Wallet
-[incomplete]
+### Wallets - Generate/Deploy Wallet
+|Option|Description|
+|-----:|---------------|
+|Generate Wallet locally|Gets the Wallet's information, Credentials, and assigned Sites and uses that information to create an Oracle wallet on the local server where <b>Walman</b> is being run.|
+|Test remote connectivity/permissions (optional)|Performs a test for all Sites assigned to the Wallet. Logs in as the Site Owner and ensures the Site Directory is writeable.|
+|Deploy Wallet remotely|The user must run the <b>Generate Wallet locally</b> option before running this option. Runs the remote connectivity test for all Sites assigned to the Wallet. If the test passes, it copies the Oracle wallet files to each Site. Finally, it performs a test of the Oracle wallet on each Site to ensure the Site can use the Credentials stored in the Oracle wallet.|
 
 ### Credentials - Manage Credentials
 [incomplete]
@@ -104,7 +114,7 @@ ansible-playbook main.yaml
 Once it completes, you should have the following: 
 |Item|Description|
 |-----:|---------------|
-|Oracle server|This is running <b>Oracle Database XE</b> (free version) with 3 PDBs - 1 for the Walman repository and 2 for testing Oracle wallets.|
+|Oracle server|This is running <b>Oracle Database XE</b> (free version) with 3 PDBs - 1 for the <b>Walman</b> database and 2 for testing Oracle wallets.|
 |Walman server|This is the <b>dbclient1</b>. It has the <b>Oracle client</b> as well as the <b>walman.py</b> program.|
 |Oracle client|This is an additional dbclient server. This is just here in case you want to demo <b>Walman</b> and remotely deploy/test your own Oracle wallet.|
 |WALMANDB|The <b>WALMANDB</b> pluggable database will be populated with some demo data to make trying <b>Walman</b> more useful and intuitive.|
