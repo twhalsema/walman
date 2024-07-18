@@ -11,7 +11,7 @@ This document provides the steps needed to configure a Vault in 1Password and to
 
 ### SCREEN: Create a new vault
 <b>ENTER:</b> Vault Name: walman_test  
-    &emsp;<b>NOTE:</b>The name "walman_test" is required for the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo)  
+    &emsp;<b>NOTE:</b> The name "walman_test" is required for the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo).  
 <b>PRESS:</b> Create Vault  
 
 ![Create Vault](/assets/images/op_service_account/02_VaultName.png)
@@ -28,7 +28,7 @@ This document provides the steps needed to configure a Vault in 1Password and to
 
 ### SCREEN: Create a Service Account - Set up your service account
 <b>ENTER:</b> Service account name: walman_test  
-      &emsp;<b>NOTE:</b> The name "walman_test" is required for the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo)   
+      &emsp;<b>NOTE:</b> The name "walman_test" is required for the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo).   
 <b>PRESS:</b> Next  
 
 ![Create Service Account](/assets/images/op_service_account/05_CreateServiceAccount.png)
@@ -43,14 +43,14 @@ This document provides the steps needed to configure a Vault in 1Password and to
 ![Grant Vault Access](/assets/images/op_service_account/06_GrantVaultAccess.png)
 
 ### SCREEN: Create a Service Account - Save service account token
-<b>PRESS:</b> The <b>copy</b> button. 
-    &emsp;<b>NOTE:</b> Copy this value off to notepad. You will need to put it in the <b>examples/ansible/var/walmanvars.yaml</b> file if using the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo).  
+<b>PRESS:</b> The <b>copy</b> button.  
+    &emsp;<b>NOTE:</b> Copy this value to notepad. You will need to put it in the <b>examples/ansible/var/walmanvars.yaml</b> file if using the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo).  
 <b>PRESS:</b> Save in 1Password  
     &emsp;<b>NOTE:</b> Store this value in 1Password since you can't retrieve it again. If you lose it, you'll need to rotate the token to get a new one.  
 
 ![Copy Service Account Token](/assets/images/op_service_account/07_ServiceAccountToken.png)
 
-### SCREEN: Save in 1PAssword
+### SCREEN: Save in 1Password
 <b>SELECT:</b> Whichever vault in which you want to store the service account's token.  
 <b>PRESS:</b> Save  
 
