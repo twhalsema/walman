@@ -6,6 +6,7 @@
   hosts: oracledb
   vars_files:
   - vars/oracle_password.yaml
+  - vars/walmanvars.yaml
   tasks:
   - name: Create directory to download Oracle packages to
     file:
