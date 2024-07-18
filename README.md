@@ -87,12 +87,23 @@ The user will be prompted for a search term. This is just to narrow down the lis
 |Deploy Wallet remotely|The user must run the <b>Generate Wallet locally</b> option before running this option. Runs the remote connectivity test for all Sites assigned to the Wallet. If the test passes, it copies the Oracle wallet files to each Site. Finally, it performs a test of the Oracle wallet on each Site to ensure the Site can use the Credentials stored in the Oracle wallet.|
 
 ### Credentials - Manage Credentials
-[incomplete]
+|Option|Description|
+|-----:|---------------|
+|Create Credential|Form to create a new Credential. The Credential can later be added to one of more Wallets.|
+|Modify Credential|Prompts the user to enter a search term and select a Credential. Presents a form to edit information for a Credential. Changes made will not be reflected in Oracle wallets until they are re-generated and re-deployed.|
+|Delete Credential|Prompts the user to enter a search term and select a Credential. Shows details for the Credential and prompts for confirmation before permanently deleting the Credential and its Wallet associations. Changes made will not be reflected in Oracle wallets until they are re-generated and re-deployed.|
 
-
+### Credentials - Create Credential
+|Prompt|Description|
+|-----:|---------------|
+|Credential Name|The alias name that will be added to the tnsnames.ora deployed with an Oracle wallet.|
+|Credential DB Host Name|The DB host name that will be added to the Credential's entry in the tnsnames.ora file deployed with an Oracle wallet.|
+|Credential DB Port|The port on which a target DB is running. This will be added to the Credential's entry in the tnsnames.ora file deployed with an Oracle wallet.|
+|Credential DB Service Name|The service name on which a target DB is running. This will be added to the Credential's entry in the tnsnames.ora file deployed with an Oracle wallet.|
+|Credential Passmgr Entry|The 1password entry which contains the username/password to be stored in an Oracle wallet for this Credential. This entry must already exist in 1password before it can be selected here.|
 
 ## Walman Demo
-[incomplete]
+This repo contains the files needed to demonstrate Walman with a test database and sample data/credentials. Once you have all the Requirements listed below in place, you will be able to automatically install/configure the Oracle database needed to store Walman data, create 2 additional databases for Oracle wallet connection tests, populate sample data for Walman, and populate sample credentials in 1password. The automation primarily uses Ansible.
 
 ### Requirements
 To use the <b>Walman</b> demo, you will need to have the following in place:
