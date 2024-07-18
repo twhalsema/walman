@@ -1,8 +1,8 @@
 # Walman
 ## Overview
-<b>Walman</b> is a python script which stores information about Oracle wallets in a database and uses that information to generate wallet files, populate them with credentials pulled from 1password.com, and deploy those wallets to desired locations.
+<b>Walman</b> is a python script which stores information about Oracle wallets in a database and uses that information to generate Oracle wallet files, populate them with credentials pulled from 1password.com, and deploy those Oracle wallets to desired servers/directories.
 
-In addition to <b>Walman</b> itself - Ansible files, other automations, and documentation - are provided to allow you to test the program with sample data/credentials.
+In addition to <b>Walman</b> itself, a [Walman Demo](https://github.com/twhalsema/walman/edit/main/README.md#walman-demo) (Ansible files, other automations, and documentation) is provided to allow you to test the program with sample data/credentials.
 
 ## Glossary
 The following terms will be used throughout this document.
@@ -22,7 +22,7 @@ There are 2 components to Walman:
 To set up the <b>Walman</b> database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, use the <b>Walman Database ERD</b> provided below to build the table structure. Alternatively, the SQL DDL to create the tables can be found in <b>examples/ansible/templates/populate_dbs.j2</b>. Just ignore the INSERT statements.
 
 To install <b>walman.py</b>, simply copy it to whatever server you intend to use as your Walman client. 
-Then run the following commands to install Python and the necessary packages. Alternatively, you can use the Ansible code in the Walman Demonstration below to install these components.
+Then run the following commands to install Python and the necessary packages. Alternatively, you can use the Ansible code in the [Walman Demo](https://github.com/twhalsema/walman/edit/main/README.md#walman-demo) below to install these components.
 ```
 dnf install python3
 pip install git+https://github.com/1Password/onepassword-sdk-python.git@v0.1.0-beta.9
@@ -55,7 +55,7 @@ pip install sh
 
 
 
-## Walman Demonstration
+## Walman Demo
 [incomplete]
 
 ### Requirements
