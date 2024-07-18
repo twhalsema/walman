@@ -19,7 +19,7 @@ There are 2 components to Walman:
 1. Walman database
 2. walman.py
 
-To set up the Walman database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, use the <b>Walman database ERD</b> provided below to build the table structure. Alternatively, the SQL DDL to create the table can be found in examples/ansible/templates/populate_dbs.j2. Just ignore the INSERT statements.
+To set up the <b>Walman</b> database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, use the <b>Walman Database ERD</b> provided below to build the table structure. Alternatively, the SQL DDL to create the tables can be found in <b>examples/ansible/templates/populate_dbs.j2</b>. Just ignore the INSERT statements.
 
 To install <b>walman.py</b>, simply copy it to whatever server you intend to use as your Walman client. 
 Then run the following commands to install Python and the necessary packages. Alternatively, you can use the Ansible code in the Walman Demonstration below to install these components.
@@ -33,7 +33,7 @@ pip install sh
 ```
 
 ## Walman Database ERD
-[incomplete]
+![Walman database ERD](/assets/images/walman_erd.png)
 
 ## Run Walman
 [incomplete]
