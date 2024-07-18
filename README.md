@@ -15,14 +15,16 @@ The following terms will be used throughout this document.
 |Wallet|When the word <b>Wallet</b> is used on its own (instead of <b>Oracle wallet</b>), it is a record stored in the <b>Walman</b> database which represents an Oracle wallet which can be generated and deployed. Each <b>Wallet</b> has a 1password entry associated with it. This is the password used when creating/modifying the <b>Oracle wallet</b>.|
 
 ## Install Walman
+NOTE: This section is for installing <b>Walman</b> manually. For automated install and sample data population, see [Walman Demo](https://github.com/twhalsema/walman/edit/main/README.md#walman-demo)
+
 There are 2 components to Walman:
 1. Walman database
 2. walman.py
 
 To set up the <b>Walman</b> database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, use the <b>Walman Database ERD</b> provided below to build the table structure. Alternatively, the SQL DDL to create the tables can be found in <b>examples/ansible/templates/populate_dbs.j2</b>. Just ignore the INSERT statements.
 
-To install <b>walman.py</b>, simply copy it to whatever server you intend to use as your Walman client. 
-Then run the following commands to install Python and the necessary packages. Alternatively, you can use the Ansible code in the [Walman Demo](https://github.com/twhalsema/walman/edit/main/README.md#walman-demo) below to install these components.
+To install <b>walman.py</b>, copy the file to whatever server you intend to use as your Walman client. 
+Then run the following commands to install Python and the necessary packages.
 ```
 dnf install python3
 pip install git+https://github.com/1Password/onepassword-sdk-python.git@v0.1.0-beta.9
@@ -30,16 +32,26 @@ pip install colorama
 pip install oracledb
 pip install paramiko
 pip install sh
+dnf config-manager 
 ```
+Next, install and log in to the 1password CLI using the instructions found here: https://developer.1password.com/docs/cli/get-started/
 
 ## Walman Database ERD
 ![Walman database ERD](/assets/images/walman_erd.png)
 
 ## Run Walman
-[incomplete]
+To invoke <b>Walman</b>, run the following:
+```
+python walman.py
+```
+This will run the application and present you with the Main Menu.
 
 ### Main Menu
-[incomplete]
+|Option|Description|
+|-----:|---------------|
+|Wallets - Create Wallet|Screen where you can store a new Wallet record. This will not create an actual Oracle wallet yet.|
+|Wallets - View/Manage Existing Wallet|This will prompt you to enter a search term and select a Wallet. The screen will allow you to view the Wallet's info, modify it, or generate an Oracle wallet from it.|
+|Credentials - Manage Credentials|Presents a menu for additional options for Credential records.|
 
 ### Wallets - Create Wallet
 [incomplete]
