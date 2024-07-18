@@ -5,9 +5,34 @@
 In addition to <b>Walman</b> itself - Ansible files, other automations, and documentation - are provided to allow you to test the program with sample data/credentials.
 
 ## Glossary
-[incomplete]
+The following terms will be used throughout this document. Familiarize yourself with them before continuing.
+
+|Term|Description|
+|-----:|---------------|
+|Credential|A record stored in the <b>Walman</b> database which represents an Oracle connection string and the 1password entry associated with it. When added to a Wallet, the username/password in the 1password entry will be queried to populate an <b>Oracle wallet</b>.|
+|Oracle wallet|An <b>Oracle wallet</b> is a set of files which securely store database login credentials (username/password pairs). Each username/password pair stored in an <b>Oracle wallet</b> is associated with a connection string or an alias name pointing to one. Oracle wallets require their own password in order to create or modify them. Oracle wallets are capable of other functions, but those are outside the scope of <b>Walman</b>.|
+|Site|A record stored in the <b>Walman</b> database which repesents a server and directory. When assigned to a <b>Wallet</b>, the generated <b>Oracle wallet</b> will be deployed to that server/directory.|
+|Wallet|When the word <b>Wallet</b> is used on its own (instead of <b>Oracle wallet</b>), it is a record stored in the <b>Walman</b> database which represents an Oracle wallet which can be generated and deployed. Each <b>Wallet</b> has a 1password entry associated with it. This is the password used when creating/modifying the <b>Oracle wallet</b>.|
 
 ## Installing Walman
+There are 2 components to Walman:
+1. Walman database
+2. walman.py
+
+To set up the Walman database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, use the <b>Walman database ERD</b> provided below to build the table structure. Alternatively, the SQL DDL to create the table can be found in examples/ansible/templates/populate_dbs.j2. Just ignore the INSERT statements.
+
+To install <b>walman.py</b>, simply copy it to whatever server you intend to use as your Walman client. 
+Then run the following commands to install Python and the necessary packages. Alternatively, you can use the Ansible code in the Walman Demonstration below to install these components.
+```
+dnf install python3
+pip install git+https://github.com/1Password/onepassword-sdk-python.git@v0.1.0-beta.9
+pip install colorama
+pip install oracledb
+pip install paramiko
+pip install sh
+```
+
+## Walman Database ERD
 [incomplete]
 
 ## Running Walman
