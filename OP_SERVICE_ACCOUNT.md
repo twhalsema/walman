@@ -48,7 +48,16 @@ This document provides the steps needed to configure a Vault in 1Password and to
 <b>PRESS:</b> Save in 1Password  
     &emsp;<b>NOTE:</b> Store this value in 1Password since you can't retrieve it again. If you lose it, you'll need to rotate the token to get a new one.  
 
-![Save Service Account Token](/assets/images/op_service_account/07_ServiceAccountToken.png)
+![Copy Service Account Token](/assets/images/op_service_account/07_ServiceAccountToken.png)
 
-### SCREEN: 
+### SCREEN: Save in 1PAssword
+<b>SELECT:</b> Whichever vault in which you want to store the service account's token.  
+<b>PRESS:</b> Save  
+
+![Save Service Account Token](/assets/images/op_service_account/08_SaveToken.png)
+
+### SCREEN: Create a Service Account - Save service account token (2)
+<b>PRESS:</b> View Details  
+
+![View Details](/assets/images/op_service_account/09_ViewDetails.png)
 
