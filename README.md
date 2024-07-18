@@ -33,7 +33,7 @@ In addition to <b>Walman</b> itself - Ansible files, other automations, and docu
 ## Walman Demonstration
 [incomplete]
 
-## Requirements
+### Requirements
 To use the <b>Walman</b> demo, you will need to have the following in place:
 - Three VMs
   - 1 with RHEL8 (dbserver) - 2048GB RAM, 30GB storage
@@ -44,7 +44,7 @@ To use the <b>Walman</b> demo, you will need to have the following in place:
 - Update the <b>ansible/vars/walmanvars.yaml</b> file with a value for <b>onepass_token</b> (token for your 1password Service Account).
 - Update the <b>ansible/vars/walmanvars.yaml</b> file with a value for <b>ansible_running_account</b> (local account running Ansible on the controller).
 
-## Configure the test environment
+### Configure the test environment
 Once you have the above requirements in place, the Ansible project I have provided will take care of the rest. But before you use it, update the <b>inventory</b> file with the names of your hosts. The dbserver should be the RHEL8 VM. The two dbclient servers should be RHEL9.
 Then just run the following:
 ```bash
@@ -59,7 +59,7 @@ Once it completes, you should have the following:
 |WALMANDB|The <b>WALMANDB</b> pluggable database will be populated with some demo data to make trying <b>Walman</b> more useful and intuitive.|
 |1Password|Your <b>walman_test</b> vault in <b>1Password</b> will be populated with some demo data to make trying <b>Walman</b> more useful and intuitive.|
 
-## Execute Walman
+### Execute Walman
 Once you have the lab environment all set up, you're ready to run <b>Walman</b> and give it a try.
 To do so, log in to the <b>dbclient1</b> server as the <b>oracle</b> account.
 Then run the following:
