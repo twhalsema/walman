@@ -1,5 +1,5 @@
 [oracledb]
-walmandbserv
+walmandbserver
 
 [dbclient1]
 walmandbclient1

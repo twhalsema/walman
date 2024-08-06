@@ -265,7 +265,7 @@
       mode: '0750'
   - name: Deploy walman.py
     copy:
-      src: files/walman.py
+      src: ../../walman.py
       dest: /home/oracle/walman.py
       owner: oracle
       group: oinstall
