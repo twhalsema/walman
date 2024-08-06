@@ -37,7 +37,7 @@ dnf config-manager
 Next, install and log in to the 1password CLI using the instructions found here: https://developer.1password.com/docs/cli/get-started/
 
 ## Walman Database ERD
-![Walman database ERD](/assets/images/walman_erd.png)
+![Walman database ERD](/docimages/walman_erd.png)
 
 ## Run Walman
 To invoke <b>Walman</b>, run the following:

@@ -7,31 +7,31 @@ This document provides the steps needed to configure a Vault in 1Password and to
 ### SCREEN: Vaults
 <b>PRESS:</b> New Vault  
 
-![New Vault](/assets/images/op_service_account/01_NewVault.png)
+![New Vault](/docimages/op_service_account/01_NewVault.png)
 
 ### SCREEN: Create a new vault
 <b>ENTER:</b> Vault Name: walman_test  
     &emsp;<b>NOTE:</b> The name "walman_test" is required for the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo).  
 <b>PRESS:</b> Create Vault  
 
-![Create Vault](/assets/images/op_service_account/02_VaultName.png)
+![Create Vault](/docimages/op_service_account/02_VaultName.png)
 
 ### SCREEN: Vault Home
 <b>PRESS:</b> Developer Tools  
 
-![Developer Tools](/assets/images/op_service_account/03_VaultHome.png)
+![Developer Tools](/docimages/op_service_account/03_VaultHome.png)
 
 ### SCREEN: Developer Tools
 <b>PRESS:</b> Service Account  
 
-![Service Account](/assets/images/op_service_account/04_DeveloperTools.png)
+![Service Account](/docimages/op_service_account/04_DeveloperTools.png)
 
 ### SCREEN: Create a Service Account - Set up your service account
 <b>ENTER:</b> Service account name: walman_test  
       &emsp;<b>NOTE:</b> The name "walman_test" is required for the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo).   
 <b>PRESS:</b> Next  
 
-![Create Service Account](/assets/images/op_service_account/05_CreateServiceAccount.png)
+![Create Service Account](/docimages/op_service_account/05_CreateServiceAccount.png)
 
 ### SCREEN: Create a Service Account - Grant vault access
 <b>CHECK:</b> walman_test (or whatever you named your vault)  
@@ -40,7 +40,7 @@ This document provides the steps needed to configure a Vault in 1Password and to
     &emsp;<b>CHECK:</b> Write Items  
 <b>PRESS:</b> Create Account  
 
-![Grant Vault Access](/assets/images/op_service_account/06_GrantVaultAccess.png)
+![Grant Vault Access](/docimages/op_service_account/06_GrantVaultAccess.png)
 
 ### SCREEN: Create a Service Account - Save service account token
 <b>PRESS:</b> The <b>copy</b> button.  
@@ -48,16 +48,16 @@ This document provides the steps needed to configure a Vault in 1Password and to
 <b>PRESS:</b> Save in 1Password  
     &emsp;<b>NOTE:</b> Store this value in 1Password since you can't retrieve it again. If you lose it, you'll need to rotate the token to get a new one.  
 
-![Copy Service Account Token](/assets/images/op_service_account/07_ServiceAccountToken.png)
+![Copy Service Account Token](/docimages/op_service_account/07_ServiceAccountToken.png)
 
 ### SCREEN: Save in 1Password
 <b>SELECT:</b> Whichever vault in which you want to store the service account's token.  
 <b>PRESS:</b> Save  
 
-![Save Service Account Token](/assets/images/op_service_account/08_SaveToken.png)
+![Save Service Account Token](/docimages/op_service_account/08_SaveToken.png)
 
 ### SCREEN: Create a Service Account - Save service account token (2)
 <b>PRESS:</b> View Details  
 
-![View Details](/assets/images/op_service_account/09_ViewDetails.png)
+![View Details](/docimages/op_service_account/09_ViewDetails.png)
 
