@@ -108,8 +108,8 @@ This repo contains the files needed to demonstrate Walman with a test database a
 ### Requirements
 To use the <b>Walman</b> demo, you will need to have the following in place:
 - Three VMs
-  - 1 with RHEL8 (dbserver) - 2048GB RAM, 30GB storage
-  - 2 with RHEL9 (dbclients1/2) - 2048GB RAM, 20GB storage
+  - 1 with RHEL8 (dbserver) - 2GB RAM, 30GB storage
+  - 2 with RHEL9 (dbclients1/2) - 2GB RAM, 20GB storage
   - I intend to provide sometime soon a Bash script which will automatically provision these in VirtualBox.
 - Separate Linux host or workstation with Ansible controller configured and able to connect to the 3 VMs without a password and with nopasswd sudo access.
 - Account on 1password.com with a vault called <b>walman_test</b> and a Service Account which has access to make changes in that vault. I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
