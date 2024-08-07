@@ -107,7 +107,7 @@ The user will be prompted for a search term. This is just to narrow down the lis
 |Credential Passmgr Entry|The 1password entry which contains the username/password to be stored in an Oracle wallet for this Credential. This entry must already exist in 1password before it can be selected here.|
 
 ## Walman Demo
-This git repo contains the files needed to demonstrate Walman with a test database and sample data/credentials. Once you have all the [Pre-Requisites](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#pre-requisites) listed below in place, you will be able to automatically install/configure the Oracle database needed to store Walman data, create 2 additional databases for Oracle wallet connection tests, populate sample data for Walman, and populate sample credentials in 1password. The automation primarily uses Ansible.
+This git repo contains the files needed to demonstrate Walman with a test database and sample data/credentials. Once you have all the [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites) listed below in place, you will be able to automatically install/configure the Oracle database needed to store Walman data, create 2 additional databases for Oracle wallet connection tests, populate sample data for Walman, and populate sample credentials in 1password. The automation primarily uses Ansible.
 
 ### Pre-Requisites
 To use the <b>Walman</b> demo, you will need to have the following in place:
@@ -117,7 +117,7 @@ To use the <b>Walman</b> demo, you will need to have the following in place:
 - Account on [1password.com](https://1password.com) with a vault called <b>walman_test</b> and a Service Account which has access to make changes in that vault. I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
 
 ### Configure the test environment
-Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#pre-requisites), run the following from the repo directory to install the Walman Demo.
+Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites), run the following from the repo directory to install the Walman Demo.
 ```bash
 cd demo
 vagrant up
