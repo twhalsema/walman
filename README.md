@@ -21,9 +21,13 @@ There are 2 components to <b>Walman</b>:
 1. Walman database
 2. walman.py
 
-To set up the <b>Walman</b> database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, use the <b>Walman Database ERD</b> provided below to build the table structure. Alternatively, the SQL DDL to create the tables can be found in <b>examples/ansible/templates/populate_dbs.j2</b>. Just ignore the INSERT statements.
+To set up the <b>Walman</b> database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, run the following to create the Walman DB structure.
+```
+@walmandb_install.sql
+```
+Refer to the <b>Walman Database ERD</b> provided below to verify table structure.
 
-To install <b>walman.py</b>, copy the file to whatever server you intend to use as your <b>Walman</b> client. 
+To install <b>walman.py</b>, copy the file to whatever server you intend to use as your <b>Walman</b> client. This server must have the Oracle client installed. 
 Then run the following commands to install Python and the necessary packages.
 ```
 dnf install python3
@@ -32,7 +36,7 @@ pip install colorama
 pip install oracledb
 pip install paramiko
 pip install sh
-dnf config-manager 
+dnf config-manager
 ```
 Next, install and log in to the 1password CLI using the instructions found here: https://developer.1password.com/docs/cli/get-started/
 
@@ -103,25 +107,29 @@ The user will be prompted for a search term. This is just to narrow down the lis
 |Credential Passmgr Entry|The 1password entry which contains the username/password to be stored in an Oracle wallet for this Credential. This entry must already exist in 1password before it can be selected here.|
 
 ## Walman Demo
-This repo contains the files needed to demonstrate Walman with a test database and sample data/credentials. Once you have all the Requirements listed below in place, you will be able to automatically install/configure the Oracle database needed to store Walman data, create 2 additional databases for Oracle wallet connection tests, populate sample data for Walman, and populate sample credentials in 1password. The automation primarily uses Ansible.
+This git repo contains the files needed to demonstrate Walman with a test database and sample data/credentials. Once you have all the [Pre-Requisites](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#pre-requisites) listed below in place, you will be able to automatically install/configure the Oracle database needed to store Walman data, create 2 additional databases for Oracle wallet connection tests, populate sample data for Walman, and populate sample credentials in 1password. The automation primarily uses Ansible.
 
-### Requirements
+### Pre-Requisites
 To use the <b>Walman</b> demo, you will need to have the following in place:
-- Three VMs
-  - 1 with RHEL8 (dbserver) - 2GB RAM, 30GB storage
-  - 2 with RHEL9 (dbclients1/2) - 2GB RAM, 20GB storage
-  - I intend to provide sometime soon a Bash script which will automatically provision these in VirtualBox.
-- Separate Linux host or workstation with Ansible controller configured and able to connect to the 3 VMs without a password and with nopasswd sudo access.
-- Account on 1password.com with a vault called <b>walman_test</b> and a Service Account which has access to make changes in that vault. I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
-- Update the <b>ansible/vars/walmanvars.yaml</b> file with a value for <b>onepass_token</b> (token for your 1password Service Account).
-- Update the <b>ansible/vars/walmanvars.yaml</b> file with a value for <b>ansible_running_account</b> (local account running Ansible on the controller).
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip) installed on your local machine (ansible-core 2.16. Version 2.17+ will not work.)
+- [VirtualBox](https://www.virtualbox.org/manual/ch02.html) installed on your local machine. (You can likely use another hypervisor, but you may need to edit the Vagrantfile to make it work.)
+- [Vagrant](https://developer.hashicorp.com/vagrant/downloads) installed on your local machine.
+- Account on [1password.com](https://1password.com) with a vault called <b>walman_test</b> and a Service Account which has access to make changes in that vault. I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
 
 ### Configure the test environment
-Once you have the above requirements in place, the Ansible project I have provided will take care of the rest. But before you use it, update the <b>inventory</b> file with the names of your hosts. The dbserver should be the RHEL8 VM. The two dbclient servers should be RHEL9.
-Then just run the following:
+Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#pre-requisites), run the following from the repo directory to install the Walman Demo.
 ```bash
+cd demo
+vagrant up
+vagrant ssh-config > /tmp/vagrant_sshconfig.txt
 ansible-playbook main.yaml
 ```
+<b>TROUBLESHOOTING:</b> If you receive an error on the "Add all hosts to /etc/hosts of all servers" TASK, it's likely because you don't have passwordless sudo set up on your local machine. If that is the case, run the following to continue:
+```bash
+ansible-playbook playbooks/etc_hosts_setup.yaml --ask-become-pass
+ansible-playbook main.yaml
+```
+
 Once it completes, you should have the following: 
 |Item|Description|
 |-----:|---------------|
@@ -133,8 +141,9 @@ Once it completes, you should have the following:
 
 ### Execute Walman
 Once you have the lab environment all set up, you're ready to run <b>Walman</b> and give it a try.
-To do so, log in to the <b>dbclient1</b> server as the <b>oracle</b> account.
-Then run the following:
+Do the following to launch Walman:
 ```bash
+ssh -F /tmp/vagrant_sshconfig.txt walmandbclient1
+sudo su - oracle
 python walman.py
 ```
