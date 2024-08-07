@@ -1,9 +1,0 @@
-- name: Configure /etc/hosts for all managed hosts
-  hosts: all
-  tasks:
-  - name: Add all hosts to /etc/hosts of all servers
-    lineinfile:
-        line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{ hostvars[item]['ansible_fqdn'] }} {{ hostvars[item]['ansible_hostname'] }}"
-        path: /etc/hosts
-        state: present
-    loop: "{{ groups['all'] }}"

@@ -17,5 +17,3 @@ pdbs:
     dbtbsp: testpdb2data
     dbdatafile: testpdb2data01.dbf
     dbsize: 100M
-onepass_token:
-ansible_running_account:

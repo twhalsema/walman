@@ -1194,8 +1194,8 @@ def wallet_generate_locally(wallet_id: int, wallet_name: str, wallet_test: bool)
                                     "cred_db_host_name":  query_cred[1],
                                     "cred_db_port":  query_cred[2],
                                     "cred_db_service":  query_cred[3],
-                                    "cred_username": subprocess.run(f"op item get \"{query_cred[4]}\" --vault={walman_vault} --fields username | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip(),
-                                    "cred_password": subprocess.run(f"op item get \"{query_cred[4]}\" --vault={walman_vault} --fields password | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip(), }
+                                    "cred_username": subprocess.run(f"op item get \"{query_cred[4]}\" --vault={walman_vault} --fields username --reveal | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip(),
+                                    "cred_password": subprocess.run(f"op item get \"{query_cred[4]}\" --vault={walman_vault} --fields password --reveal | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip(), }
         wallet_creds.append(wallet_cred)
     print(f"{Fore.BLUE}INFO:{Fore.RESET} Retrieved Credential data from WALMANDB and the Passmgr")
     

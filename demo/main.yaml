@@ -32,7 +32,7 @@
     when: installstat['stat']['exists'] == false
   - name: Install Oracle packages
     dnf:
-      name: 
+      name:
       - /oracle_rpms/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
       - /oracle_rpms/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
       disable_gpg_check: true
@@ -67,11 +67,6 @@
         export ORACLE_HOME=${ORACLE_BASE}/product/21c/dbhomeXE
         export ORACLE_SID=XE
         export PATH=${ORACLE_HOME}/bin:${PATH}
-      state: present
-  - name: Configure oracle user for ssh from ansible control
-    authorized_key:
-      key: "{{ lookup('file', '/home/{{ ansible_running_account }}/.ssh/id_rsa.pub') }}"
-      user: oracle
       state: present
   - name: Configure sudo for oracle user
     copy:
@@ -132,14 +127,14 @@
       path: /home/oracle/.bashrc
       block: |
         export ORACLE_HOME=/home/oracle/oracle_client
+        export LD_LIBRARY_PATH=${ORACLE_HOME}/lib
         export JAVA_HOME=${ORACLE_HOME}/jdk
         export PATH=${ORACLE_HOME}/bin:${JAVA_HOME}/bin:${PATH}
       state: present
 
 - name: Create and populate PDBs in the XE CDB and configure 1Password
   hosts: oracledb
-  remote_user: oracle
-  become: no
+  become_user: oracle
   vars_files:
   - vars/oracle_password.yaml
   - vars/walmanvars.yaml
@@ -160,7 +155,7 @@
     loop: "{{ pdbs }}"
   - name: Create the PDBs using the scripts
     shell:
-      cmd: "sqlplus -s / as sysdba @/tmp/{{ item['dbname'] }}.sql"
+      cmd: ". /home/oracle/.bashrc; sqlplus -s / as sysdba @/tmp/{{ item['dbname'] }}.sql"
     loop: "{{ pdbs }}"
     register: pdbcreateoutput
   - name: Show the output of the PDB creation
@@ -178,7 +173,7 @@
       dest: /tmp/populate_dbs.sql
   - name: Run the PDB data population script
     shell:
-      cmd: "sqlplus -s / as sysdba @/tmp/populate_dbs.sql"
+      cmd: ". /home/oracle/.bashrc; sqlplus -s / as sysdba @/tmp/populate_dbs.sql"
     register: pdbpopoutput
   - name: Show the output of the PDB data population
     debug:
@@ -192,6 +187,10 @@
   hosts: dbclient1
   vars_files:
   - vars/walmanvars.yaml
+  vars_prompt:
+  - name: onepass_token
+    prompt: Enter your 1Password Service Account Token - 
+    private: false
   tasks:
   - name: Add 1Password service account to bashrc
     lineinfile:
@@ -282,10 +281,16 @@
     shell:
       cmd: ". /home/oracle/.bashrc; op vault list | grep walman_test | tr -s ' ' | cut -d' ' -f2"
     register: op_vault_verify
+  - name: show op_vault_verify
+    debug:
+      var: op_vault_verify
   - name: Verify if 1password data already loaded
     shell:
       cmd: ". /home/oracle/.bashrc; op item list --vault=walman_test | grep -v EDITED | wc -l"
     register: op_item_count
+  - name: show op_item_count
+    debug:
+      var: op_item_count
     when: op_vault_verify['stdout'] == 'walman_test'
   - name: Load 1password test data into walman_test vault
     script:
