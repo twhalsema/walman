@@ -107,16 +107,16 @@ The user will be prompted for a search term. This is just to narrow down the lis
 |Credential Passmgr Entry|The 1password entry which contains the username/password to be stored in an Oracle wallet for this Credential. This entry must already exist in 1password before it can be selected here.|
 
 ## Walman Demo
-This git repo contains the files needed to demonstrate Walman with a test database and sample data/credentials. Once you have all the [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites) listed below in place, you will be able to automatically install/configure the Oracle database needed to store Walman data, create 2 additional databases for Oracle wallet connection tests, populate sample data for Walman, and populate sample credentials in 1password.
+This git repo contains the files needed to demonstrate `walman.py` with sample data/credentials. Once you have all the [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites) listed below in place, you will be able to automatically install/configure the Oracle database needed to store Walman data, create 2 additional databases for Oracle wallet connection tests, populate sample data in the Walman database, and populate sample credentials in 1password.
 
-### Pre-Requisites
+### DEMO - Installation Pre-Requisites
 To use the <b>Walman</b> demo, you will need to have the following in place:
-- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip) installed on your local machine (ansible-core 2.16. Version 2.17+ will not work.)
-- [VirtualBox](https://www.virtualbox.org/manual/ch02.html) installed on your local machine. (You can likely use another hypervisor, but you may need to edit the Vagrantfile to make it work.)
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip) installed on your local machine (Use `ansible-core 2.16`. Version 2.17+ will not work.)
+- [VirtualBox](https://www.virtualbox.org/manual/ch02.html) installed on your local machine. (You can likely use another hypervisor, but you may need to edit the `Vagrantfile` to make it work.)
 - [Vagrant](https://developer.hashicorp.com/vagrant/downloads) installed on your local machine.
 - Account on [1password.com](https://1password.com) with a vault called `walman_test` and a <b>Service Account</b> which has access to make changes in that vault. I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
 
-### Configure the Demo environment
+### DEMO - Install the Demo
 Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites), run the following from the repo directory to install the <b>Walman</b> demo.
 ```bash
 cd demo
@@ -139,7 +139,7 @@ Once it completes, you should have the following:
 |WALMANDB|The `WALMANDB` pluggable database will be populated with some demo data to make trying `walman.py` more useful and intuitive.|
 |1Password|Your `walman_test` vault in 1Password will be populated with some demo data to make trying `walman.py` more useful and intuitive.|
 
-### Execute Walman
+### DEMO - Execute walman.py
 Once you have the demo environment all set up, you're ready to run `walman.py` and give it a try.
 Do the following to launch `walman.py`:
 ```bash
@@ -147,3 +147,14 @@ ssh -F /tmp/vagrant_sshconfig.txt walmandbclient1
 sudo su - oracle
 python walman.py
 ```
+
+### DEMO - Uninstall Walman Demo
+If you would like to uninstall the Walman demo, run the following from the repo directory:
+```bash
+cd demo
+vagrant halt
+vagrant destroy
+rm /tmp/vagrant_sshconfig.txt
+sudo vi /etc/hosts
+```
+Remove the `walman` entries from `/etc/hosts` on your local machine.
