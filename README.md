@@ -1,8 +1,8 @@
 # Walman
 ## Overview
-<b>Walman</b> is a python script which stores information about Oracle wallets in a database and uses that information to generate Oracle wallet files, populate them with credentials pulled from 1password.com, and deploy those Oracle wallets to desired servers/directories.
+`walman.py` is a Python script which stores information about Oracle wallets in a database and uses that information to generate Oracle wallet files, populate them with credentials pulled from 1password.com, and deploy those Oracle wallets to remote servers/directories.
 
-In addition to <b>Walman</b> itself, a [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo) (Ansible files, other automations, and documentation) is provided to allow you to test the program with sample data/credentials.
+In addition to `walman.py` itself, a [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo) (Vagrantfile, Ansible files, other automations, and documentation) is provided to allow you to test the program with sample data/credentials.
 
 ## Glossary
 The following terms will be used throughout this document.
@@ -15,21 +15,21 @@ The following terms will be used throughout this document.
 |Wallet|When the word <b>Wallet</b> is used on its own (instead of <b>Oracle wallet</b>), it is a record stored in the <b>Walman</b> database which represents an Oracle wallet which can be generated and deployed. Each <b>Wallet</b> has a 1password entry associated with it. This is the password used when creating/modifying the <b>Oracle wallet</b>.|
 
 ## Install Walman
-NOTE: This section is for installing <b>Walman</b> manually. For automated install and sample data population, see [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo)
+<b>NOTE:</b> This section is for installing <b>Walman</b> manually. For automated install and sample data population, see [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo)
 
 There are 2 components to <b>Walman</b>:
 1. Walman database
-2. walman.py
+2. `walman.py`
 
-To set up the <b>Walman</b> database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, run the following to create the Walman DB structure.
-```
+To set up the <b>Walman</b> database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, run the following to create the <b>Walman</b> database structure.
+```bash
 @walmandb_install.sql
 ```
-Refer to the <b>Walman Database ERD</b> provided below to verify table structure.
+Refer to the [Walman Database ERD](https://github.com/twhalsema/walman/edit/main/README.md#walman-database-erd) provided below to verify table structure.
 
-To install <b>walman.py</b>, copy the file to whatever server you intend to use as your <b>Walman</b> client. This server must have the Oracle client installed. 
+To install `walman.py`, copy the file to whatever server you intend to use as your <b>Walman</b> client. This server must have the Oracle client installed. 
 Then run the following commands to install Python and the necessary packages.
-```
+```bash
 dnf install python3
 pip install git+https://github.com/1Password/onepassword-sdk-python.git@v0.1.0-beta.9
 pip install colorama
@@ -81,12 +81,12 @@ The user will be prompted for a search term. This is just to narrow down the lis
 |-----:|---------------|
 |Site Host Name|The name of a server to which the Oracle wallet should be deployed later.|
 |Site Directory|The directory where the Oracle wallet will reside on that server.|
-|Site Owner|The os account which will own the Oracle wallet files. The server/account running <b>Walman</b> must be able to ssh to the Site Host Name as Site Owner without a password before deploying the Oracle wallet.|
+|Site Owner|The os account which will own the Oracle wallet files. The server/account running `walman.py` must be able to ssh to the Site Host Name as Site Owner without a password before deploying the Oracle wallet.|
 
 ### Wallets - Generate/Deploy Wallet
 |Option|Description|
 |-----:|---------------|
-|Generate Wallet locally|Gets the Wallet's information, Credentials, and assigned Sites and uses that information to create an Oracle wallet on the local server where <b>Walman</b> is being run.|
+|Generate Wallet locally|Gets the Wallet's information, Credentials, and assigned Sites and uses that information to create an Oracle wallet on the local server where `walman.py` is being run.|
 |Test remote connectivity/permissions (optional)|Performs a test for all Sites assigned to the Wallet. Logs in as the Site Owner and ensures the Site Directory is writeable.|
 |Deploy Wallet remotely|The user must run the <b>Generate Wallet locally</b> option before running this option. Runs the remote connectivity test for all Sites assigned to the Wallet. If the test passes, it copies the Oracle wallet files to each Site. Finally, it performs a test of the Oracle wallet on each Site to ensure the Site can use the Credentials stored in the Oracle wallet.|
 
@@ -117,7 +117,7 @@ To use the <b>Walman</b> demo, you will need to have the following in place:
 - Account on [1password.com](https://1password.com) with a vault called <b>walman_test</b> and a Service Account which has access to make changes in that vault. I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
 
 ### Configure the Demo environment
-Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites), run the following from the repo directory to install the Walman Demo.
+Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites), run the following from the repo directory to install the <b>Walman</b> demo.
 ```bash
 cd demo
 vagrant up
@@ -133,15 +133,15 @@ ansible-playbook main.yaml
 Once it completes, you should have the following: 
 |Item|Description|
 |-----:|---------------|
-|Oracle server|This is running <b>Oracle Database XE</b> (free version) with 3 PDBs - 1 for the <b>Walman</b> database and 2 for testing Oracle wallets.|
-|Walman server|This is the <b>dbclient1</b>. It has the <b>Oracle client</b> as well as the <b>walman.py</b> program.|
-|Oracle client|This is an additional dbclient server. This is just here in case you want to demo <b>Walman</b> and remotely deploy/test your own Oracle wallet.|
-|WALMANDB|The <b>WALMANDB</b> pluggable database will be populated with some demo data to make trying <b>Walman</b> more useful and intuitive.|
-|1Password|Your <b>walman_test</b> vault in <b>1Password</b> will be populated with some demo data to make trying <b>Walman</b> more useful and intuitive.|
+|Oracle server|This server `walmandbserver1` is running <b>Oracle Database XE</b> (free version) with 3 PDBs - 1 for the <b>Walman</b> database and 2 for testing Oracle wallets.|
+|Walman server|This server `walmandbclient1` has the <b>Oracle client</b> as well as the `walman.py` program.|
+|Oracle client|This server `walmandbclient2` is an additional Oracle client server. This is just here in case you want to test remotely deploying Oracle Wallets with `walman.py`.|
+|WALMANDB|The `WALMANDB` pluggable database will be populated with some demo data to make trying `walman.py` more useful and intuitive.|
+|1Password|Your `walman_test` vault in 1Password will be populated with some demo data to make trying `walman.py` more useful and intuitive.|
 
 ### Execute Walman
-Once you have the lab environment all set up, you're ready to run <b>Walman</b> and give it a try.
-Do the following to launch Walman:
+Once you have the demo environment all set up, you're ready to run `walman.py` and give it a try.
+Do the following to launch `walman.py`:
 ```bash
 ssh -F /tmp/vagrant_sshconfig.txt walmandbclient1
 sudo su - oracle
