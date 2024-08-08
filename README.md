@@ -124,7 +124,7 @@ vagrant up
 vagrant ssh-config > /tmp/vagrant_sshconfig.txt
 ansible-playbook main.yaml
 ```
-<b>TROUBLESHOOTING:</b> If you receive an error on the `Add all hosts to /etc/hosts of all servers` TASK, it's likely because you don't have passwordless `sudo` set up on your local machine. If that is the case, run the following to continue:
+<b>TROUBLESHOOTING:</b> If you receive an error on the `Configure /etc/hosts for localhost` PLAY, it's likely because you don't have passwordless `sudo` set up on your local machine. If that is the case, run the following to continue:
 ```bash
 ansible-playbook playbooks/etc_hosts_setup.yaml --ask-become-pass
 ansible-playbook main.yaml
