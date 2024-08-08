@@ -12,24 +12,16 @@
     file:
       path: /oracle_rpms
       state: directory
-  - name: Determine if Oracle pre-install package already exists on disk
-    stat:
-      path: /oracle_rpms/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
-    register: preinstallstat
-  - name: Determine if Oracle install package already exists on disk
-    stat:
-      path: /oracle_rpms/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
-    register: installstat
   - name: Download the Oracle pre-install package
     get_url:
       url: https://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/getPackage/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
+      checksum: sha1:93b890f46908e7388f7acfc96c43c52ba6285631
       dest: /oracle_rpms
-    when: preinstallstat['stat']['exists'] == false
   - name: Download the Oracle XE install package
     get_url:
       url: https://download.oracle.com/otn-pub/otn_software/db-express/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
+      checksum: sha1:2bd89be5e63541fc055603d84ee1f9adabaf001a
       dest: /oracle_rpms
-    when: installstat['stat']['exists'] == false
   - name: Install Oracle packages
     dnf:
       name:
@@ -103,16 +95,12 @@
   become_user: oracle
   tags: ora_client_setup
   tasks:
-  - name: Determine if Oracle client package already exists on disk
-    stat:
-      path: /home/oracle/LINUX.X64_234000_client_home.zip
-    register: oraclientstat
   - name: Download Oracle client
     get_url:
       url: https://download.oracle.com/otn_software/linux/instantclient/23c/LINUX.X64_234000_client_home.zip
+      checksum: sha1:c57ba24408905f586c0cd0c2188096ee8c575347
       dest: /home/oracle/LINUX.X64_234000_client_home.zip
       mode: '0660'
-    when: oraclientstat['stat']['exists'] == false
   - name: Create oracle_client directory
     file:
         path: /home/oracle/oracle_client
