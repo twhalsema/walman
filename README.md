@@ -182,9 +182,24 @@ You will be presented with the `walman.py` <b>MAIN MENU</b>.
 <b>Step 10:</b> Observe the output. You will see an Oracle Wallet generated locally on `walmandbclient1` using information retrieved from 1Password. It will also test Oracle database connections using the 8 Credentials stored in the Oracle Wallet.  
 <b>Step 11:</b> Select `3) Deploy Wallet remotely`.  
 <b>Step 12:</b> Observe the output. You will see the Oracle Wallet deployed to the 2 Sites listed earlier in <b>Step 7</b>. It will also remotely test Oracle database connections using the 8 Credentials stored in the Oracle Wallet from each of the Sites.  
-<b>Step 13:</b>
+<b>Step 13:</b> Select `q) Quit` to close `walman.py`.
 
+<b>Step 14:</b> Return to your original Terminal tab/window logged in to `walmandbclient2`. Run the following:  
+```bash
+ls -la
+cd wallets/all_test_dbs_and_users
+ls -la *
+```
+Observe that the Oracle Wallet files are now present on this server and directory which had previously been assigned as one of the Sites for this Wallet.  
 
+<b>Step 15:</b> Run the following to use the Oracle Wallet to test a database connection.
+```bash
+export TNS_ADMIN=/home/oracle/wallets/all_test_dbs_and_users/tns_admin
+sqlplus /@TESTPDB1_TESTUSER12
+show con_name;
+show user;
+```
+<b>Step 16:</b> Observe that you have logged in to the `TESTPDB1` database as the `TESTUSER12` user via the Oracle Wallet that you remotely deployed from `walman.py`. Congratulations! 
 
 
 ### DEMO - Uninstall Walman Demo
