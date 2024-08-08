@@ -126,11 +126,14 @@ vagrant up
 vagrant ssh-config > /tmp/vagrant_sshconfig.txt
 ansible-playbook main.yaml
 ```
-<b>TROUBLESHOOTING:</b> If you receive an error on the PLAY `Configure /etc/hosts for localhost`, it's likely because you don't have passwordless `sudo` set up on your local machine. If that is the case, run the following to continue:
-```bash
-ansible-playbook playbooks/etc_hosts_setup.yaml --ask-become-pass
-ansible-playbook main.yaml
-```
+> <b>Troubleshooting:</b>
+>
+> If you receive an error on the PLAY `Configure /etc/hosts for localhost`, it's likely because you don't have passwordless `sudo` set up on your local machine.
+> If that is the case, run the following to continue:
+>```bash
+>ansible-playbook playbooks/etc_hosts_setup.yaml --ask-become-pass
+>ansible-playbook main.yaml
+>```
 
 Once it completes, you should have the following: 
 |Item|Description|
