@@ -118,17 +118,22 @@ To use the <b>Walman</b> demo, you will need to have the following in place:
 
 ### DEMO - Install the Demo
 Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites), run the following from the repo directory to install the <b>Walman</b> demo.
+
+<b>NOTE:</b> You will be prompted for your 1Password Service Account Token near the end of the `main.yaml` playbook execution.
 ```bash
 cd demo
 vagrant up
 vagrant ssh-config > /tmp/vagrant_sshconfig.txt
 ansible-playbook main.yaml
 ```
-<b>TROUBLESHOOTING:</b> If you receive an error on the `Add all hosts to /etc/hosts of all servers` TASK, it's likely because you don't have passwordless `sudo` set up on your local machine. If that is the case, run the following to continue:
-```bash
-ansible-playbook playbooks/etc_hosts_setup.yaml --ask-become-pass
-ansible-playbook main.yaml
-```
+> <b>Troubleshooting:</b>
+>
+> If you receive an error on the PLAY `Configure /etc/hosts for localhost`, it's likely because you don't have passwordless `sudo` set up on your local machine.
+> If that is the case, run the following to continue:
+>```bash
+>ansible-playbook playbooks/etc_hosts_setup.yaml --ask-become-pass
+>ansible-playbook main.yaml
+>```
 
 Once it completes, you should have the following: 
 |Item|Description|
@@ -147,6 +152,55 @@ ssh -F /tmp/vagrant_sshconfig.txt walmandbclient1
 sudo su - oracle
 python walman.py
 ```
+
+### DEMO - Scenario
+This section is provided to walk you through a scenario showing the capability of `walman.py`. In this scenario, you will use `walman.py` to deploy and test an Oracle wallet on a remote server.
+
+<b>Step 1:</b> Run the following from the `demo` directory.
+```bash
+ssh -F /tmp/vagrant_sshconfig.txt walmandbclient2
+sudo su - oracle
+ls -la
+```
+Observe that there currently is no `wallets` directory present here.
+
+<b>Step 2:</b> Open another Terminal tab/window on your local machine, and run the following from the `demo` directory.
+```bash
+ssh -F /tmp/vagrant_sshconfig.txt walmandbclient1
+sudo su - oracle
+python walman.py
+```
+You will be presented with the `walman.py` <b>MAIN MENU</b>.
+
+<b>Step 3:</b> Select option `2) Wallets - View/Manage Existing Wallet`.  
+<b>Step 4:</b> When prompted for a `Search String`, leave it blank and press `ENTER`.  
+<b>Step 5:</b> Select `1) WALLET - all_test_dbs_and_users`.  
+<b>Step 6:</b> You should now be presented with the <b>MANAGE WALLET</b>. Select `1) View Wallet Details`.  
+<b>Step 7:</b> Observe the details stored for this Wallet. It contains 8 Credentials, and it is configured to be deployed to 2 Sites.  
+<b>Step 8:</b> Select `2) Generate/Deploy Wallet`.  
+<b>Step 9:</b> Select `1) Generate Wallet locally`. Enter `y` at the prompt.  
+<b>Step 10:</b> Observe the output. You will see an Oracle Wallet generated locally on `walmandbclient1` using information retrieved from 1Password. It will also test Oracle database connections using the 8 Credentials stored in the Oracle Wallet.  
+<b>Step 11:</b> Select `3) Deploy Wallet remotely`.  
+<b>Step 12:</b> Observe the output. You will see the Oracle Wallet deployed to the 2 Sites listed earlier in <b>Step 7</b>. It will also remotely test Oracle database connections using the 8 Credentials stored in the Oracle Wallet from each of the Sites.  
+<b>Step 13:</b> Select `q) Quit` to close `walman.py`.
+
+<b>Step 14:</b> Return to your original Terminal tab/window logged in to `walmandbclient2`. Run the following:  
+```bash
+ls -la
+cd wallets/all_test_dbs_and_users
+ls -la *
+```
+Observe that the Oracle Wallet files are now present on this server and directory which had previously been assigned as one of the Sites for this Wallet.  
+
+<b>Step 15:</b> Run the following to use the Oracle Wallet to test a database connection.
+```bash
+export TNS_ADMIN=/home/oracle/wallets/all_test_dbs_and_users/tns_admin
+sqlplus /@TESTPDB1_TESTUSER12
+show con_name;
+show user;
+```
+<b>Step 16:</b> Observe that you have logged in to the `TESTPDB1` database as the `TESTUSER12` user via the Oracle Wallet that you remotely deployed from `walman.py`. Congratulations! 
+
 
 ### DEMO - Uninstall Walman Demo
 If you would like to uninstall the Walman demo, run the following from the repo directory:
