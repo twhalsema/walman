@@ -141,7 +141,7 @@ ansible-playbook main.yaml
 Once it completes, you should have the following: 
 |Item|Description|
 |-----:|---------------|
-|Oracle server|This server `walmandbserver1` is running <b>Oracle Database XE</b> (free version) with 3 PDBs - 1 for the <b>Walman</b> database and 2 for testing Oracle wallets.|
+|Oracle server|This server `walmandbserver` is running <b>Oracle Database XE</b> (free version) with 3 PDBs - 1 for the <b>Walman</b> database and 2 for testing Oracle wallets.|
 |Walman server|This server `walmandbclient1` has the <b>Oracle client</b> as well as the `walman.py` program.|
 |Oracle client|This server `walmandbclient2` is an additional Oracle client server. This is just here in case you want to test remotely deploying Oracle Wallets with `walman.py`.|
 |WALMANDB|The `WALMANDB` pluggable database will be populated with some demo data to make trying `walman.py` more useful and intuitive.|
