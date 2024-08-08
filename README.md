@@ -118,6 +118,8 @@ To use the <b>Walman</b> demo, you will need to have the following in place:
 
 ### DEMO - Install the Demo
 Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites), run the following from the repo directory to install the <b>Walman</b> demo.
+
+<b>NOTE:</b> You will be prompted for your 1Password Service Account Token near the end of the `main.yaml` playbook execution.
 ```bash
 cd demo
 vagrant up
