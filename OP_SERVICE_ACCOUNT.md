@@ -28,7 +28,7 @@ This document provides the steps needed to configure a Vault in 1Password and to
 
 ### SCREEN: Create a Service Account - Set up your service account
 <b>ENTER:</b> Service account name: walman_test  
-      &emsp;<b>NOTE:</b> The name "walman_test" is required for the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo).   
+      &emsp;<b>NOTE:</b> The name `walman_test` is required for the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo).   
 <b>PRESS:</b> Next  
 
 ![Create Service Account](/docimages/op_service_account/05_CreateServiceAccount.png)
@@ -44,7 +44,7 @@ This document provides the steps needed to configure a Vault in 1Password and to
 
 ### SCREEN: Create a Service Account - Save service account token
 <b>PRESS:</b> The <b>copy</b> button.  
-    &emsp;<b>NOTE:</b> Copy this value to notepad. You will need to put it in the <b>examples/ansible/var/walmanvars.yaml</b> file if using the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo).  
+    &emsp;<b>NOTE:</b> Copy this value to notepad. You will be prompted for this when running `main.yaml` if using the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo). You will need to use it in `op login` if installing `walman.py` manually.  
 <b>PRESS:</b> Save in 1Password  
     &emsp;<b>NOTE:</b> Store this value in 1Password since you can't retrieve it again. If you lose it, you'll need to rotate the token to get a new one.  
 
