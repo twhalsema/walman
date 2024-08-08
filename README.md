@@ -114,7 +114,7 @@ To use the <b>Walman</b> demo, you will need to have the following in place:
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip) installed on your local machine (ansible-core 2.16. Version 2.17+ will not work.)
 - [VirtualBox](https://www.virtualbox.org/manual/ch02.html) installed on your local machine. (You can likely use another hypervisor, but you may need to edit the Vagrantfile to make it work.)
 - [Vagrant](https://developer.hashicorp.com/vagrant/downloads) installed on your local machine.
-- Account on [1password.com](https://1password.com) with a vault called <b>walman_test</b> and a Service Account which has access to make changes in that vault. I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
+- Account on [1password.com](https://1password.com) with a vault called `walman_test` and a <b>Service Account</b> which has access to make changes in that vault. I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
 
 ### Configure the Demo environment
 Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites), run the following from the repo directory to install the <b>Walman</b> demo.
