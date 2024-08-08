@@ -44,7 +44,7 @@ Next, install and log in to the 1password CLI using the instructions found here:
 ![Walman database ERD](/docimages/walman_erd.png)
 
 ## Run Walman
-To invoke <b>Walman</b>, run the following:
+To invoke `walman.py`, run the following:
 ```
 python walman.py
 ```
