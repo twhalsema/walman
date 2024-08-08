@@ -44,7 +44,7 @@ This document provides the steps needed to configure a Vault in 1Password and to
 
 ### SCREEN: Create a Service Account - Save service account token
 <b>PRESS:</b> The <b>copy</b> button.  
-    &emsp;<b>NOTE:</b> Copy this value to notepad. You will be prompted for this when running `main.yaml` if using the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo). You will need to use it in `op login` if installing `walman.py` manually.  
+    &emsp;<b>NOTE:</b> Copy this value to notepad. You will be prompted for this when running `main.yaml` if using the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo). You will need to use it when configuring 1Password CLI if installing `walman.py` manually.
 <b>PRESS:</b> Save in 1Password  
     &emsp;<b>NOTE:</b> Store this value in 1Password since you can't retrieve it again. If you lose it, you'll need to rotate the token to get a new one.  
 
