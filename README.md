@@ -107,7 +107,7 @@ The user will be prompted for a search term. This is just to narrow down the lis
 |Credential Passmgr Entry|The 1password entry which contains the username/password to be stored in an Oracle wallet for this Credential. This entry must already exist in 1password before it can be selected here.|
 
 ## Walman Demo
-This git repo contains the files needed to demonstrate `walman.py` with sample data/credentials. Once you have all the [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites) listed below in place, you will be able to automatically install/configure the Oracle database needed to store Walman data, create 2 additional databases for Oracle wallet connection tests, populate sample data in the Walman database, and populate sample credentials in 1password.
+This git repo contains the files needed to demonstrate `walman.py` with sample data/credentials. Once you have all the [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#demo---installation-pre-requisites) listed below in place, you will be able to automatically install/configure the Oracle database needed to store Walman data, create 2 additional databases for Oracle wallet connection tests, populate sample data in the Walman database, and populate sample credentials in 1password.
 
 ### DEMO - Installation Pre-Requisites
 To use the <b>Walman</b> demo, you will need to have the following in place:
@@ -120,7 +120,7 @@ To use the <b>Walman</b> demo, you will need to have the following in place:
   > I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
 
 ### DEMO - Install the Demo
-Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#pre-requisites), run the following from the repo directory to install the <b>Walman</b> demo.
+Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#demo---installation-pre-requisites), run the following from the repo directory to install the <b>Walman</b> demo.
 
 <b>NOTE:</b> You will be prompted for your 1Password Service Account Token near the end of the `main.yaml` playbook execution.
 ```bash
