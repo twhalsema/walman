@@ -14,7 +14,7 @@ The following terms will be used throughout this document.
 |Site|A record stored in the <b>Walman</b> database which repesents a server and directory. When assigned to a <b>Wallet</b>, the generated <b>Oracle wallet</b> will be deployed to that server/directory.|
 |Wallet|When the word <b>Wallet</b> is used on its own (instead of <b>Oracle wallet</b>), it is a record stored in the <b>Walman</b> database which represents an Oracle wallet which can be generated and deployed. Each <b>Wallet</b> has a 1password entry associated with it. This is the password used when creating/modifying the <b>Oracle wallet</b>.|
 
-## Install Walman
+## Install Walman (Manual method)
 <b>NOTE:</b> This section is for installing <b>Walman</b> manually. For automated install and sample data population, see [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo)
 
 There are 2 components to <b>Walman</b>:
