@@ -1,0 +1,45 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "walmandbserver" do |walmandbserver|
+    walmandbserver.vm.box = "gyptazy/oraclelinux8.8-arm64"
+    walmandbserver.vm.box_version = "1.0.0"
+    walmandbserver.vm.network "public_network"
+    walmandbserver.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+    end
+    walmandbserver.vm.provision "shell",
+      run: "always",
+      inline: "ip route del default via 10.0.2.2 || true"
+    walmandbserver.vm.hostname = "walmandbserver.example.com"
+  end
+
+  config.vm.define "walmandbclient1" do |walmandbclient1|
+    walmandbclient1.vm.box = "gyptazy/oraclelinux9.2-arm64"
+    walmandbclient1.vm_box_version = "1.0.0"
+    walmandbclient1.vm.network "public_network"
+    walmandbclient1.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+    end
+    walmandbclient1.vm.provision "shell",
+      run: "always",
+      inline: "ip route del default via 10.0.2.2 || true"
+    walmandbclient1.vm.hostname = "walmandbclient1.example.com"
+  end
+
+  config.vm.define "walmandbclient2" do |walmandbclient2|
+    walmandbclient2.vm.box = "gyptazy/oraclelinux9.2-arm64"
+    walmandbclient2.vm_box_version = "1.0.0"
+    walmandbclient2.vm.network "public_network"
+    walmandbclient2.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+    end
+    walmandbclient2.vm.provision "shell",
+      run: "always",
+      inline: "ip route del default via 10.0.2.2 || true"
+    walmandbclient2.vm.hostname = "walmandbclient2.example.com"
+  end
+end
+
