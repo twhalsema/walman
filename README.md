@@ -10,6 +10,7 @@ This git repo contains the files needed to demonstrate `walman.py` with sample d
 ### DEMO - Installation Pre-Requisites
 To use the <b>Walman</b> demo, you will need to have the following in place:
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip) installed on your local machine.
+  > Use `ansible-core 2.16`. Version 2.17+ is incompatible with OS certified for Oracle XE used in the demo.
 - [VirtualBox](https://www.virtualbox.org/manual/ch02.html) installed on your local machine.
   > You can likely use another hypervisor, but you may need to edit the `Vagrantfile` to make it work.
 - [Vagrant](https://developer.hashicorp.com/vagrant/downloads) installed on your local machine.
