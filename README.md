@@ -25,7 +25,7 @@ To set up the <b>Walman</b> database, you will need to have an Oracle database u
 ```bash
 @walmandb_install.sql
 ```
-Refer to the [Walman Database ERD](https://github.com/twhalsema/walman/edit/main/README.md#walman-database-erd) provided below to verify table structure.
+Refer to the [Walman Database ERD](https://github.com/twhalsema/walman/blob/main/README.md#walman-database-erd) provided below to verify table structure.
 
 To install `walman.py`, copy the file to whatever server you intend to use as your <b>Walman</b> client. This server must have the Oracle client installed. 
 Then run the following commands to install Python and the necessary packages.
