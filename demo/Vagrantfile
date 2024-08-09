@@ -2,41 +2,69 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
+  # Detect the architecture
+  architecture = `uname -m`.strip
 
-  config.vm.define "walmandbserver" do |walmandbserver|
-    walmandbserver.vm.box = "generic/oracle8"
-    walmandbserver.vm.network "public_network"
-    walmandbserver.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
+  if architecture == "x86_64" || architecture == "amd64"
+    # Configuration for x86/AMD64
+    config.vm.define "walmandbserver" do |walmandbserver|
+      walmandbserver.vm.box = "generic/oracle8"
+      walmandbserver.vm.network "public_network"
+      walmandbserver.vm.provider "virtualbox" do |vb|
+        vb.memory = "2048"
+      end
+      walmandbserver.vm.provision "shell",
+        run: "always",
+        inline: "ip route del default via 10.0.2.2 || true"
+      walmandbserver.vm.hostname = "walmandbserver.example.com"
     end
-    walmandbserver.vm.provision "shell",
-      run: "always",
-      inline: "ip route del default via 10.0.2.2 || true"
-    walmandbserver.vm.hostname = "walmandbserver.example.com"
+
+    config.vm.define "walmandbclient1" do |walmandbclient1|
+      walmandbclient1.vm.box = "generic/oracle9"
+      walmandbclient1.vm.network "public_network"
+      walmandbclient1.vm.provider "virtualbox" do |vb|
+        vb.memory = "2048"
+      end
+      walmandbclient1.vm.provision "shell",
+        run: "always",
+        inline: "ip route del default via 10.0.2.2 || true"
+      walmandbclient1.vm.hostname = "walmandbclient1.example.com"
+    end
+
+    config.vm.define "walmandbclient2" do |walmandbclient2|
+      walmandbclient2.vm.box = "generic/oracle9"
+      walmandbclient2.vm.network "public_network"
+      walmandbclient2.vm.provider "virtualbox" do |vb|
+        vb.memory = "2048"
+      end
+      walmandbclient2.vm.provision "shell",
+        run: "always",
+        inline: "ip route del default via 10.0.2.2 || true"
+      walmandbclient2.vm.hostname = "walmandbclient2.example.com"
+    end
+
+  elsif architecture == "arm64" || architecture == "aarch64"
+    # Configuration for ARM64
+    config.vm.define "walmandbserver" do |walmandbserver|
+      walmandbserver.vm.box = "gyptazy/oraclelinux8.8-arm64"
+      walmandbserver.vm.box_version = "1.0.0"
+      walmandbserver.vm.hostname = "walmandbserver.example.com"
+    end
+
+    config.vm.define "walmandbclient1" do |walmandbclient1|
+      walmandbclient1.vm.box = "gyptazy/oraclelinux9.2-arm64"
+      walmandbclient1.vm.box_version = "1.0.0"
+      walmandbclient1.vm.hostname = "walmandbclient1.example.com"
+    end
+
+    config.vm.define "walmandbclient2" do |walmandbclient2|
+      walmandbclient2.vm.box = "gyptazy/oraclelinux9.2-arm64"
+      walmandbclient2.vm.box_version = "1.0.0"
+      walmandbclient2.vm.hostname = "walmandbclient2.example.com"
+    end
+
+  else
+    raise "Unsupported architecture: #{architecture}"
   end
 
-  config.vm.define "walmandbclient1" do |walmandbclient1|
-    walmandbclient1.vm.box = "generic/oracle9"
-    walmandbclient1.vm.network "public_network"
-    walmandbclient1.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
-    end
-    walmandbclient1.vm.provision "shell",
-      run: "always",
-      inline: "ip route del default via 10.0.2.2 || true"
-    walmandbclient1.vm.hostname = "walmandbclient1.example.com"
-  end
-
-  config.vm.define "walmandbclient2" do |walmandbclient2|
-    walmandbclient2.vm.box = "generic/oracle9"
-    walmandbclient2.vm.network "public_network"
-    walmandbclient2.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
-    end
-    walmandbclient2.vm.provision "shell",
-      run: "always",
-      inline: "ip route del default via 10.0.2.2 || true"
-    walmandbclient2.vm.hostname = "walmandbclient2.example.com"
-  end
 end
-
