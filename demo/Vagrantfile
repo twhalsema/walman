@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
   if architecture == "x86_64" || architecture == "amd64"
     # Configuration for x86/AMD64
     config.vm.define "walmandbserver" do |walmandbserver|
-      walmandbserver.vm.box = "generic/oracle8"
+      walmandbserver.vm.box = "generic/oracle9"
       walmandbserver.vm.network "public_network"
       walmandbserver.vm.provider "virtualbox" do |vb|
         vb.memory = "2048"

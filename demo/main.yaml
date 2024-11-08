@@ -12,23 +12,16 @@
     file:
       path: /oracle_rpms
       state: directory
-  - name: Download the Oracle pre-install package
+  - name: Download the Oracle 23ai Free install package
     get_url:
-      url: https://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/getPackage/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
-      checksum: sha1:93b890f46908e7388f7acfc96c43c52ba6285631
+      url: https://download.oracle.com/otn-pub/otn_software/db-free/oracle-database-free-23ai-1.0-1.el9.x86_64.rpm
+      checksum: sha256:76305d7485b13725cff06f8785a1c881e0914277fa729453090fc1d71a517c3a
       timeout: 120
       dest: /oracle_rpms
-  - name: Download the Oracle XE install package
-    get_url:
-      url: https://download.oracle.com/otn-pub/otn_software/db-express/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
-      checksum: sha1:2bd89be5e63541fc055603d84ee1f9adabaf001a
-      timeout: 120
-      dest: /oracle_rpms
-  - name: Install Oracle packages
+  - name: Install Oracle package
     dnf:
       name:
-      - /oracle_rpms/oracle-database-preinstall-21c-1.0-1.el8.x86_64.rpm
-      - /oracle_rpms/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
+      - /oracle_rpms/oracle-database-free-23ai-1.0-1.el9.x86_64.rpm
       disable_gpg_check: true
       state: present
   - name: Disable firewalld
@@ -39,9 +32,9 @@
   - name: Create home directory for oracle user
     shell:
       cmd: mkhomedir_helper oracle
-  - name: Create xe_logs directory
+  - name: Create /ora_free_logs directory
     file:
-      path: /xe_logs
+      path: /ora_free_logs
       owner: oracle
       group: oinstall
       state: directory
@@ -51,15 +44,15 @@
     register: oradatastat
   - name: Run the Oracle configuration
     shell:
-      cmd: (echo "{{ oracle_password }}"; echo "{{ oracle_password }}";) | /etc/init.d/oracle-xe-21c configure >> /xe_logs/XEsilentinstall.log 2>&1
+      cmd: (echo "{{ oracle_password }}"; echo "{{ oracle_password }}";) | /etc/init.d/oracle-free-23ai configure >> /ora_free_logs/ora_free_silent_install.log 2>&1
     when: oradatastat['stat']['exists'] == false
   - name: Add Oracle env variables to .bashrc
     blockinfile:
       path: /home/oracle/.bashrc
       block: |
         export ORACLE_BASE=/opt/oracle
-        export ORACLE_HOME=${ORACLE_BASE}/product/21c/dbhomeXE
-        export ORACLE_SID=XE
+        export ORACLE_HOME=${ORACLE_BASE}/product/23ai/dbhomeFree
+        export ORACLE_SID=FREE
         export PATH=${ORACLE_HOME}/bin:${PATH}
       state: present
   - name: Configure sudo for oracle user
@@ -123,7 +116,7 @@
         export PATH=${ORACLE_HOME}/bin:${JAVA_HOME}/bin:${PATH}
       state: present
 
-- name: Create and populate PDBs in the XE CDB and configure 1Password
+- name: Create and populate PDBs in the FREE CDB and configure 1Password
   hosts: oracledb
   become_user: oracle
   vars_files:
@@ -137,8 +130,8 @@
         ADMIN USER {{ item.dbadmin }} IDENTIFIED BY {{ oracle_password }}
         ROLES = (dba)
         DEFAULT TABLESPACE {{ item.dbtbsp }}
-        DATAFILE '/opt/oracle/oradata/XE/{{ item.dbname }}/{{ item.dbdatafile }}' SIZE {{ item.dbsize }} AUTOEXTEND ON
-        FILE_NAME_CONVERT = ('/opt/oracle/oradata/XE/pdbseed/','/opt/oracle/oradata/XE/{{ item.dbname }}/');
+        DATAFILE '/opt/oracle/oradata/FREE/{{ item.dbname }}/{{ item.dbdatafile }}' SIZE {{ item.dbsize }} AUTOEXTEND ON
+        FILE_NAME_CONVERT = ('/opt/oracle/oradata/FREE/pdbseed/','/opt/oracle/oradata/FREE/{{ item.dbname }}/');
         ALTER PLUGGABLE DATABASE {{ item.dbname }} OPEN;
         ALTER PLUGGABLE DATABASE {{ item.dbname }} SAVE STATE;
         exit;
