@@ -12,18 +12,42 @@
     file:
       path: /oracle_rpms
       state: directory
-  - name: Download the Oracle 23ai Free install package
+  - name: Download the Oracle 23ai Free install package (x86)
     get_url:
       url: https://download.oracle.com/otn-pub/otn_software/db-free/oracle-database-free-23ai-1.0-1.el9.x86_64.rpm
       checksum: sha256:76305d7485b13725cff06f8785a1c881e0914277fa729453090fc1d71a517c3a
       timeout: 120
       dest: /oracle_rpms
-  - name: Install Oracle package
+    when: ansible_architecture == "x86_64"
+  - name: Download the Oracle 23ai Free pre-install package (aarch64)
+    get_url:
+      url: https://yum.oracle.com/repo/OracleLinux/OL8/appstream/aarch64/getPackage/oracle-database-preinstall-23ai-1.0-3.el8.aarch64.rpm
+      checksum: sha256:68936d4fc7e55ce5192f9e4819f9ab8a80b079bb9e20d39bc2a991bd3d4a6095
+      timeout: 120
+      dest: /oracle_rpms
+    when: ansible_architecture == "aarch64"
+  - name: Download the Oracle 23ai Free install package (aarch64)
+    get_url:
+      url: https://download.oracle.com/otn-pub/otn_software/db-free/oracle-database-free-23ai-1.0-1.el8.aarch64.rpm
+      checksum: sha256:9f82f22217db7c760d25956ca1590be996dbbe1ea397949726c68065524f69af
+      timeout: 120
+      dest: /oracle_rpms
+    when: ansible_architecture == "aarch64"
+  - name: Install Oracle package (x86)
     dnf:
       name:
       - /oracle_rpms/oracle-database-free-23ai-1.0-1.el9.x86_64.rpm
       disable_gpg_check: true
       state: present
+    when: ansible_architecture == "x86_64"
+  - name: Install Oracle package (aarch64)
+    dnf:
+      name:
+      - /oracle_rpms/oracle-database-preinstall-23ai-1.0-3.el8.aarch64.rpm
+      - /oracle_rpms/oracle-database-free-23ai-1.0-1.el8.aarch64.rpm
+      disable_gpg_check: true
+      state: present
+    when: ansible_architecture == "aarch64"
   - name: Disable firewalld
     service:
         name: firewalld
@@ -90,22 +114,38 @@
   become_user: oracle
   tags: ora_client_setup
   tasks:
-  - name: Download Oracle client
+  - name: Download Oracle client (x86)
     get_url:
       url: https://download.oracle.com/otn_software/linux/instantclient/23c/LINUX.X64_234000_client_home.zip
       checksum: sha1:c57ba24408905f586c0cd0c2188096ee8c575347
       dest: /home/oracle/LINUX.X64_234000_client_home.zip
       mode: '0660'
       timeout: 120
+    when: ansible_architecture == "x86_64"
+  - name: Download Oracle client (aarch64)
+    get_url:
+      url: https://download.oracle.com/otn/nt/oracle23ai/235000/LINUX.ARM64_235000_client_home.zip
+      checksum: sha256:fabbbf1516ec012571ca2bc6642c9df966454ae0e7287a26a75ff12a35d8d168
+      dest: /home/oracle/
+      mode: '0660'
+      timeout: 120
+    when: ansible_architecture == "aarch64"
   - name: Create oracle_client directory
     file:
         path: /home/oracle/oracle_client
         state: directory
-  - name: Unzip Oracle client
+  - name: Unzip Oracle client (x86)
     unarchive:
       remote_src: true
       src: /home/oracle/LINUX.X64_234000_client_home.zip
       dest: /home/oracle/oracle_client
+    when: ansible_architecture == "x86_64"
+  - name: Unzip Oracle client (aarch64)
+    unarchive:
+      remote_src: true
+      src: /home/oracle/LINUX.ARM64_235000_client_home.zip
+      dest: /home/oracle/oracle_client
+    when: ansible_architecture == "aarch64"
   - name: Set env variables for Oracle client and Java
     blockinfile:
       path: /home/oracle/.bashrc
