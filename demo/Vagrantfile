@@ -48,19 +48,25 @@ Vagrant.configure("2") do |config|
     config.vm.define "walmandbserver" do |walmandbserver|
       walmandbserver.vm.box = "gyptazy/oraclelinux8.8-arm64"
       walmandbserver.vm.box_version = "1.0.0"
-      walmandbserver.vm.hostname = "walmandbserver.example.com"
+      walmandbserver.vm.provider "vmware_fusion" do |vf|
+        vf.memory = "2048"
+      end
     end
 
     config.vm.define "walmandbclient1" do |walmandbclient1|
       walmandbclient1.vm.box = "gyptazy/oraclelinux8.8-arm64"
       walmandbclient1.vm.box_version = "1.0.0"
-      walmandbclient1.vm.hostname = "walmandbclient1.example.com"
+      walmandbclient1.vm.provider "vmware_fusion" do |vf|
+        vf.memory = "1024"
+      end
     end
 
     config.vm.define "walmandbclient2" do |walmandbclient2|
       walmandbclient2.vm.box = "gyptazy/oraclelinux8.8-arm64"
       walmandbclient2.vm.box_version = "1.0.0"
-      walmandbclient2.vm.hostname = "walmandbclient2.example.com"
+      walmandbclient2.vm.provider "vmware_fusion" do |vf|
+        vf.memory = "2048"
+      end
     end
 
   else

@@ -12,7 +12,7 @@
     file:
       path: /oracle_rpms
       state: directory
-  - name: Download the Oracle 23ai Free install package (x86)
+  - name: Download the Oracle 23ai Free install package (x86_64)
     get_url:
       url: https://download.oracle.com/otn-pub/otn_software/db-free/oracle-database-free-23ai-1.0-1.el9.x86_64.rpm
       checksum: sha256:76305d7485b13725cff06f8785a1c881e0914277fa729453090fc1d71a517c3a
@@ -33,7 +33,7 @@
       timeout: 120
       dest: /oracle_rpms
     when: ansible_architecture == "aarch64"
-  - name: Install Oracle package (x86)
+  - name: Install Oracle package (x86_64)
     dnf:
       name:
       - /oracle_rpms/oracle-database-free-23ai-1.0-1.el9.x86_64.rpm
@@ -107,14 +107,14 @@
   - name: Configure sudo for oracle user
     copy:
       content: "oracle ALL=(ALL) NOPASSWD:ALL"
-      dest: /etc/sudoers.d/oracle   
+      dest: /etc/sudoers.d/oracle 
 
-- name: Configure Oracle client software on dbclients
+- name: Configure Oracle client software on dbclients (x86_64)
   hosts: dbclients
   become_user: oracle
   tags: ora_client_setup
   tasks:
-  - name: Download Oracle client (x86)
+  - name: Download Oracle client (x86_64)
     get_url:
       url: https://download.oracle.com/otn_software/linux/instantclient/23c/LINUX.X64_234000_client_home.zip
       checksum: sha1:c57ba24408905f586c0cd0c2188096ee8c575347
@@ -122,31 +122,18 @@
       mode: '0660'
       timeout: 120
     when: ansible_architecture == "x86_64"
-  - name: Download Oracle client (aarch64)
-    get_url:
-      url: https://download.oracle.com/otn/nt/oracle23ai/235000/LINUX.ARM64_235000_client_home.zip
-      checksum: sha256:fabbbf1516ec012571ca2bc6642c9df966454ae0e7287a26a75ff12a35d8d168
-      dest: /home/oracle/
-      mode: '0660'
-      timeout: 120
-    when: ansible_architecture == "aarch64"
-  - name: Create oracle_client directory
+  - name: Create oracle_client directory (x86_64)
     file:
         path: /home/oracle/oracle_client
         state: directory
-  - name: Unzip Oracle client (x86)
+    when: ansible_architecture == "x86_64"
+  - name: Unzip Oracle client (x86_64)
     unarchive:
       remote_src: true
       src: /home/oracle/LINUX.X64_234000_client_home.zip
       dest: /home/oracle/oracle_client
     when: ansible_architecture == "x86_64"
-  - name: Unzip Oracle client (aarch64)
-    unarchive:
-      remote_src: true
-      src: /home/oracle/LINUX.ARM64_235000_client_home.zip
-      dest: /home/oracle/oracle_client
-    when: ansible_architecture == "aarch64"
-  - name: Set env variables for Oracle client and Java
+  - name: Set env variables for Oracle client and Java (x86_64)
     blockinfile:
       path: /home/oracle/.bashrc
       block: |
@@ -155,6 +142,34 @@
         export JAVA_HOME=${ORACLE_HOME}/jdk
         export PATH=${ORACLE_HOME}/bin:${JAVA_HOME}/bin:${PATH}
       state: present
+    when: ansible_architecture == "x86_64"
+  
+- name: Configure Oracle client software on dbclients (aarch64)
+  hosts: dbclients
+  tags: ora_client_setup
+  tasks:
+  - name: Install Oracle client dnf repo pre-req (aarch64)
+    dnf:
+      name: oracle-release-el8
+      disable_gpg_check: true
+      state: present
+    when: ansible_architecture == "aarch64"
+  - name: Install Oracle client (aarch64)
+    dnf:
+      name: oracle-instantclient19.19-sqlplus
+      disable_gpg_check: true
+      state: present
+    when: ansible_architecture == "aarch64"
+  - name: Set env variables for Oracle client and Java (aarch64)
+    blockinfile:
+      path: /home/oracle/.bashrc
+      block: |
+        export ORACLE_HOME=/usr/lib/oracle/19.19/client64
+        export LD_LIBRARY_PATH=${ORACLE_HOME}/lib
+        export JAVA_HOME=${ORACLE_HOME}/jdk
+        export PATH=${ORACLE_HOME}/bin:${JAVA_HOME}/bin:${PATH}
+      state: present
+    when: ansible_architecture == "aarch64"
 
 - name: Create and populate PDBs in the FREE CDB and configure 1Password
   hosts: oracledb
@@ -232,14 +247,30 @@
       name: onepassword_stable_channel
       repo_gpgcheck: true
       state: present
-  - name: Install python, git, pip, and 1password-cli
+  - name: Install python, git, pip, and 1password-clia (x86_64)
     dnf:
       name:
-      - python
+      - python3
       - git
       - pip
       - 1password-cli
       state: latest
+    when: ansible_architecture == "x86_64"
+  - name: Install python, git, pip, and 1password-cli (aarch64)
+    dnf:
+      name:
+      - python3.12
+      - python3.12-pip
+      - git
+      - 1password-cli
+      state: latest
+    when: ansible_architecture == "aarch64"
+  - name: Update python version (aarch64)
+    file:
+      path: /etc/alternatives/python3
+      src: /usr/bin/python3.12
+      state: link
+    when: ansible_architecture == "aarch64"
   - name: Install Python packages
     pip:
       name: 
