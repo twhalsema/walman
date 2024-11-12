@@ -10,8 +10,8 @@ This git repo contains the files needed to demonstrate `walman.py` with sample d
 ### DEMO - Installation Pre-Requisites
 To use the <b>Walman</b> demo, you will need to have the following in place:
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip) installed on your local machine.
-- [VirtualBox](https://www.virtualbox.org/manual/ch02.html) installed on your local machine.
-  > You can likely use another hypervisor, but you may need to edit the `Vagrantfile` to make it work.
+- <b>x86_64 only:</b> [VirtualBox] (https://www.virtualbox.org/) installed on your local machine.
+  <b>aarch64/ARM64 only:</b> [VMWare Fusion] (https://blogs.vmware.com/teamfusion/2024/05/fusion-pro-now-available-free-for-personal-use.html) installed on your local machine.
 - [Vagrant](https://developer.hashicorp.com/vagrant/downloads) installed on your local machine.
 - Account on [1password.com](https://1password.com) with a vault called `walman_test` and a <b>Service Account</b> which has access to make changes in that vault.
   > I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
@@ -22,7 +22,10 @@ Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/
 <b>NOTE:</b> You will be prompted for your 1Password Service Account Token near the end of the `main.yaml` playbook execution.
 ```bash
 cd demo
-vagrant up
+# x86_64 only:
+  vagrant up
+# aarch64/ARM64 only:
+  ./vagrant_up_aarch64.sh
 vagrant ssh-config > /tmp/vagrant_sshconfig.txt
 ansible-playbook main.yaml
 ```
