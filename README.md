@@ -14,6 +14,7 @@ To use the <b>Walman</b> demo, you will need to have the following in place:
 - [VirtualBox](https://www.virtualbox.org/) <b>(x86_64 only)</b> installed on your local machine.
 - [VMWare Fusion](https://blogs.vmware.com/teamfusion/2024/05/fusion-pro-now-available-free-for-personal-use.html) <b>(aarch64/ARM64 only)</b> installed on your local machine.
 - [Vagrant](https://developer.hashicorp.com/vagrant/downloads) installed on your local machine.
+  > For aarch64/ARM64, at time of writing version 2.4.1 works but 2.4.2 does not. You must also run: `vagrant plugin install vagrant-vmware-desktop`
 - Account on [1password.com](https://1password.com) with a vault called `walman_test` and a <b>Service Account</b> which has access to make changes in that vault.
   > I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
 
