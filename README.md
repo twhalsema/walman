@@ -10,8 +10,9 @@ This git repo contains the files needed to demonstrate `walman.py` with sample d
 ### DEMO - Installation Pre-Requisites
 To use the <b>Walman</b> demo, you will need to have the following in place:
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip) installed on your local machine.
-- <b>x86_64 only:</b> [VirtualBox](https://www.virtualbox.org/) installed on your local machine.
-- <b>aarch64/ARM64 only:</b> [VMWare Fusion](https://blogs.vmware.com/teamfusion/2024/05/fusion-pro-now-available-free-for-personal-use.html) installed on your local machine.
+  > For aarch64/ARM64, you must install `ansible-core 2.16.0` specifically due to technical limitation of Oracle Linux 8 (required for Oracle 23ai Free on ARM64).
+- [VirtualBox](https://www.virtualbox.org/) <b>(x86_64 only)</b> installed on your local machine.
+- [VMWare Fusion](https://blogs.vmware.com/teamfusion/2024/05/fusion-pro-now-available-free-for-personal-use.html) <b>(aarch64/ARM64 only)</b> installed on your local machine.
 - [Vagrant](https://developer.hashicorp.com/vagrant/downloads) installed on your local machine.
 - Account on [1password.com](https://1password.com) with a vault called `walman_test` and a <b>Service Account</b> which has access to make changes in that vault.
   > I have provided a guide on how to do this here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
