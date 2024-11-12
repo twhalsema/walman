@@ -22,10 +22,12 @@ Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/
 <b>NOTE:</b> You will be prompted for your 1Password Service Account Token near the end of the `main.yaml` playbook execution.
 ```bash
 cd demo
+
 # x86_64 only:
   vagrant up
 # aarch64/ARM64 only:
   ./vagrant_up_aarch64.sh
+
 vagrant ssh-config > /tmp/vagrant_sshconfig.txt
 ansible-playbook main.yaml
 ```
