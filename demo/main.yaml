@@ -107,7 +107,7 @@
   - name: Configure sudo for oracle user
     copy:
       content: "oracle ALL=(ALL) NOPASSWD:ALL"
-      dest: /etc/sudoers.d/oracle 
+      dest: /etc/sudoers.d/oracle
 
 - name: Configure Oracle client software on dbclients (x86_64)
   hosts: dbclients
@@ -143,7 +143,7 @@
         export PATH=${ORACLE_HOME}/bin:${JAVA_HOME}/bin:${PATH}
       state: present
     when: ansible_architecture == "x86_64"
-  
+
 - name: Configure Oracle client software on dbclients (aarch64)
   hosts: dbclients
   tags: ora_client_setup
@@ -228,7 +228,7 @@
   - vars/walmanvars.yaml
   vars_prompt:
   - name: onepass_token
-    prompt: Enter your 1Password Service Account Token - 
+    prompt: Enter your 1Password Service Account Token -
     private: false
   tasks:
   - name: Add 1Password service account to bashrc
@@ -273,7 +273,7 @@
     when: ansible_architecture == "aarch64"
   - name: Install Python packages
     pip:
-      name: 
+      name:
       - git+https://github.com/1Password/onepassword-sdk-python.git@v0.1.0-beta.9
       - colorama
       - oracledb

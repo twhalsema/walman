@@ -42,7 +42,7 @@ ansible-playbook main.yaml
 >ansible-playbook main.yaml
 >```
 
-Once it completes, you should have the following: 
+Once it completes, you should have the following:
 |Item|Description|
 |-----:|---------------|
 |Oracle server|This server `walmandbserver` is running <b>Oracle Database 23ai Free</b> with 3 PDBs - 1 for the <b>Walman</b> database and 2 for testing Oracle wallets.|
@@ -79,25 +79,25 @@ python walman.py
 ```
 You will be presented with the `walman.py` <b>MAIN MENU</b>.
 
-<b>Step 3:</b> Select option `2) Wallets - View/Manage Existing Wallet`.  
-<b>Step 4:</b> When prompted for a `Search String`, leave it blank and press `ENTER`.  
-<b>Step 5:</b> Select `1) WALLET - all_test_dbs_and_users`.  
-<b>Step 6:</b> You should now be presented with the <b>MANAGE WALLET</b>. Select `1) View Wallet Details`.  
-<b>Step 7:</b> Observe the details stored for this Wallet. It contains 8 Credentials, and it is configured to be deployed to 2 Sites.  
-<b>Step 8:</b> Select `2) Generate/Deploy Wallet`.  
-<b>Step 9:</b> Select `1) Generate Wallet locally`. Enter `y` at the prompt.  
-<b>Step 10:</b> Observe the output. You will see an Oracle Wallet generated locally on `walmandbclient1` using information retrieved from 1Password. It will also test Oracle database connections using the 8 Credentials stored in the Oracle Wallet.  
-<b>Step 11:</b> Select `3) Deploy Wallet remotely`.  
-<b>Step 12:</b> Observe the output. You will see the Oracle Wallet deployed to the 2 Sites listed earlier in <b>Step 7</b>. It will also remotely test Oracle database connections using the 8 Credentials stored in the Oracle Wallet from each of the Sites.  
+<b>Step 3:</b> Select option `2) Wallets - View/Manage Existing Wallet`.
+<b>Step 4:</b> When prompted for a `Search String`, leave it blank and press `ENTER`.
+<b>Step 5:</b> Select `1) WALLET - all_test_dbs_and_users`.
+<b>Step 6:</b> You should now be presented with the <b>MANAGE WALLET</b>. Select `1) View Wallet Details`.
+<b>Step 7:</b> Observe the details stored for this Wallet. It contains 8 Credentials, and it is configured to be deployed to 2 Sites.
+<b>Step 8:</b> Select `2) Generate/Deploy Wallet`.
+<b>Step 9:</b> Select `1) Generate Wallet locally`. Enter `y` at the prompt.
+<b>Step 10:</b> Observe the output. You will see an Oracle Wallet generated locally on `walmandbclient1` using information retrieved from 1Password. It will also test Oracle database connections using the 8 Credentials stored in the Oracle Wallet.
+<b>Step 11:</b> Select `3) Deploy Wallet remotely`.
+<b>Step 12:</b> Observe the output. You will see the Oracle Wallet deployed to the 2 Sites listed earlier in <b>Step 7</b>. It will also remotely test Oracle database connections using the 8 Credentials stored in the Oracle Wallet from each of the Sites.
 <b>Step 13:</b> Select `q) Quit` to close `walman.py`.
 
-<b>Step 14:</b> Return to your original Terminal tab/window logged in to `walmandbclient2`. Run the following:  
+<b>Step 14:</b> Return to your original Terminal tab/window logged in to `walmandbclient2`. Run the following:
 ```bash
 ls -la
 cd wallets/all_test_dbs_and_users
 ls -la *
 ```
-Observe that the Oracle Wallet files are now present on this server and directory which had previously been assigned as one of the Sites for this Wallet.  
+Observe that the Oracle Wallet files are now present on this server and directory which had previously been assigned as one of the Sites for this Wallet.
 
 <b>Step 15:</b> Run the following to use the Oracle Wallet to test a database connection.
 ```bash
@@ -106,7 +106,7 @@ sqlplus /@TESTPDB1_TESTUSER12
 show con_name;
 show user;
 ```
-<b>Step 16:</b> Observe that you have logged in to the `TESTPDB1` database as the `TESTUSER12` user via the Oracle Wallet that you remotely deployed from `walman.py`. Congratulations! 
+<b>Step 16:</b> Observe that you have logged in to the `TESTPDB1` database as the `TESTUSER12` user via the Oracle Wallet that you remotely deployed from `walman.py`. Congratulations!
 
 
 ### DEMO - Uninstall Walman Demo
@@ -143,7 +143,7 @@ To set up the <b>Walman</b> database, you will need to have an Oracle database u
 ```
 Refer to the [Walman Database ERD](https://github.com/twhalsema/walman/blob/main/README.md#walman-database-erd) provided above to verify table structure.
 
-To install `walman.py`, copy the file to whatever server you intend to use as your <b>Walman</b> client. This server must have the Oracle client installed. 
+To install `walman.py`, copy the file to whatever server you intend to use as your <b>Walman</b> client. This server must have the Oracle client installed.
 Then run the following commands to install Python and the necessary packages.
 ```bash
 dnf install python3

@@ -3,33 +3,33 @@ ALTER SESSION SET CONTAINER=testpdb1;
 	CREATE USER testuser11 IDENTIFIED BY "testuserpass1100" CONTAINER=current;
 	GRANT connect, resource TO testuser11 CONTAINER=current;
 	ALTER USER testuser11 DEFAULT ROLE ALL CONTAINER=current;
-	
+
 	CREATE USER testuser12 IDENTIFIED BY "testuserpass1200" CONTAINER=current;
 	GRANT connect, resource TO testuser12 CONTAINER=current;
 	ALTER USER testuser12 DEFAULT ROLE ALL CONTAINER=current;
-	
+
 	CREATE USER testuser13 IDENTIFIED BY "testuserpass1300" CONTAINER=current;
 	GRANT connect, resource TO testuser13 CONTAINER=current;
 	ALTER USER testuser13 DEFAULT ROLE ALL CONTAINER=current;
-	
+
 	CREATE USER testuser14 IDENTIFIED BY "testuserpass1400" CONTAINER=current;
 	GRANT connect, resource TO testuser14 CONTAINER=current;
 	ALTER USER testuser14 DEFAULT ROLE ALL CONTAINER=current;
-	
+
 ALTER SESSION SET CONTAINER=testpdb2;
 
 	CREATE USER testuser21 IDENTIFIED BY "testuserpass2100" CONTAINER=current;
 	GRANT connect, resource TO testuser21 CONTAINER=current;
 	ALTER USER testuser21 DEFAULT ROLE ALL CONTAINER=current;
-	
+
 	CREATE USER testuser22 IDENTIFIED BY "testuserpass2200" CONTAINER=current;
 	GRANT connect, resource TO testuser22 CONTAINER=current;
 	ALTER USER testuser22 DEFAULT ROLE ALL CONTAINER=current;
-	
+
 	CREATE USER testuser23 IDENTIFIED BY "testuserpass2300" CONTAINER=current;
 	GRANT connect, resource TO testuser23 CONTAINER=current;
 	ALTER USER testuser23 DEFAULT ROLE ALL CONTAINER=current;
-	
+
 	CREATE USER testuser24 IDENTIFIED BY "testuserpass2400" CONTAINER=current;
 	GRANT connect, resource TO testuser24 CONTAINER=current;
 	ALTER USER testuser24 DEFAULT ROLE ALL CONTAINER=current;
@@ -77,28 +77,28 @@ ALTER SESSION SET CONTAINER=walmandb;
 			CONSTRAINT walsite_host_dir_uniq  UNIQUE (site_host_name, site_directory, site_owner)
 		);
 
-		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry) 
+		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry)
 			VALUES (1,'TESTPDB1_TESTUSER11','{{ ansible_fqdn }}',1521,'testpdb1','ORACLE - TESTPDB1 - TESTUSER11');
-		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry) 
+		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry)
 			VALUES (2,'TESTPDB1_TESTUSER12','{{ ansible_fqdn }}',1521,'testpdb1','ORACLE - TESTPDB1 - TESTUSER12');
-		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry) 
+		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry)
 			VALUES (3,'TESTPDB1_TESTUSER13','{{ ansible_fqdn }}',1521,'testpdb1','ORACLE - TESTPDB1 - TESTUSER13');
-		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry) 
+		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry)
 			VALUES (4,'TESTPDB1_TESTUSER14','{{ ansible_fqdn }}',1521,'testpdb1','ORACLE - TESTPDB1 - TESTUSER14');
-		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry) 
+		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry)
 			VALUES (5,'TESTPDB2_TESTUSER21','{{ ansible_fqdn }}',1521,'testpdb2','ORACLE - TESTPDB2 - TESTUSER21');
-		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry) 
+		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry)
 			VALUES (6,'TESTPDB2_TESTUSER22','{{ ansible_fqdn }}',1521,'testpdb2','ORACLE - TESTPDB2 - TESTUSER22');
-		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry) 
+		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry)
 			VALUES (7,'TESTPDB2_TESTUSER23','{{ ansible_fqdn }}',1521,'testpdb2','ORACLE - TESTPDB2 - TESTUSER23');
-		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry) 
+		INSERT INTO walman.credentials (cred_id, cred_name, cred_db_host_name, cred_db_port, cred_db_service, cred_passmgr_entry)
 			VALUES (8,'TESTPDB2_TESTUSER24','{{ ansible_fqdn }}',1521,'testpdb2','ORACLE - TESTPDB2 - TESTUSER24');
 		COMMIT;
-		
+
 		INSERT INTO walman.wallets (wallet_id, wallet_passmgr_entry, wallet_description) VALUES (1,'WALLET - all_test_dbs_and_users','Wallet containing credentials for all test users in all test DBs');
 		INSERT INTO walman.wallets (wallet_id, wallet_passmgr_entry, wallet_description) VALUES (2,'WALLET - testpdb1_users','Wallet containing credentials for all users only in testpdb1');
 		COMMIT;
-		
+
 		INSERT INTO walman.wallet_credentials (wallet_id, cred_id) VALUES (1,1);
 		INSERT INTO walman.wallet_credentials (wallet_id, cred_id) VALUES (1,2);
 		INSERT INTO walman.wallet_credentials (wallet_id, cred_id) VALUES (1,3);
@@ -112,7 +112,7 @@ ALTER SESSION SET CONTAINER=walmandb;
 		INSERT INTO walman.wallet_credentials (wallet_id, cred_id) VALUES (2,3);
 		INSERT INTO walman.wallet_credentials (wallet_id, cred_id) VALUES (2,4);
 		COMMIT;
-		
+
 {% for host in groups['dbclients'] %}
 		INSERT INTO walman.wallet_sites(wallet_id, site_host_name, site_directory, site_owner) VALUES (1,'{{ hostvars[host]["ansible_fqdn"] }}','/home/oracle/wallets/all_test_dbs_and_users','oracle');
 		INSERT INTO walman.wallet_sites(wallet_id, site_host_name, site_directory, site_owner) VALUES (2,'{{ hostvars[host]["ansible_fqdn"] }}','/home/oracle/wallets/testpdb1_users','oracle');
@@ -121,4 +121,4 @@ ALTER SESSION SET CONTAINER=walmandb;
 
 EXIT;
 
-		
+

@@ -26,7 +26,7 @@ do
 	else
 		SYSDBA_SUFFIX=''
 	fi
-	
+
 	# Print the command before executing it
 	SQLPLUS_CMD="sqlplus -S -L /@${CRED} ${SYSDBA_SUFFIX}"
 	echo -e -n "${BLUE}Testing:${NC} ${CRED} ${SYSDBA_SUFFIX}\n"
