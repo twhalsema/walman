@@ -1050,7 +1050,7 @@ def wallet_deploy(wallet_id: int):
             ssh_client = paramiko.SSHClient()
             ssh_client.load_system_host_keys()
             ssh_client.connect(hostname = site[0], port = 22, username = site[2])
-            remote_command = f"cd {site[1]}; . {site[1]}/wallet_test.sh"
+            remote_command = f"bash -ic \"cd {site[1]}; . {site[1]}/wallet_test.sh\""
             ssh_stdin, ssh_stdout, ssh_stderr = ssh_client.exec_command(remote_command)
             time.sleep(5)
 
@@ -1195,19 +1195,26 @@ def wallet_generate_locally(wallet_id: int, wallet_name: str, wallet_test: bool)
     print(f"{Fore.BLUE}INFO:{Fore.RESET} Retrieved Credential data from WALMANDB and the Passmgr")
 
     # Retrieve the Wallet's password from the Passmgr
-    wallet_password = subprocess.run(f"op item get \"{wallet_name}\" --vault={walman_vault} --fields password | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip()
+    wallet_password = subprocess.run(f"op item get \"{wallet_name}\" --vault={walman_vault} --fields password --reveal | head -1", shell=True, check=True, capture_output=True, encoding='utf-8').stdout.strip()
     print(f"{Fore.BLUE}INFO:{Fore.RESET} Retrieved Wallet password from the Passmgr")
 
     # Generate the local Wallet files
     try:
-        results = subprocess.run(f"echo -e \"{wallet_password}\\n{wallet_password}\" | mkstore -nologo -wrl {wallet_local_directory}/wallet -create", shell=True, check=True, capture_output=True, encoding='utf-8').stdout
-    except:
-        print(results.stdout)
+        subprocess.run(f"echo \"{wallet_password}\n{wallet_password}\" | mkstore -nologo -wrl {wallet_local_directory}/wallet -create", shell=True, check=True, capture_output=True, encoding='utf-8')
+    except subprocess.CalledProcessError as e:
+        print("Command failed with exit code:", e.returncode)
+        print("Error output:", e.stdout + e.stderr)
+
     print(f"{Fore.BLUE}INFO:{Fore.RESET} Generated an empty local Wallet")
 
     # Populate the local Wallet
     for wal_cred in wallet_creds:
-        subprocess.run(f"echo -e \"{wallet_password}\" | mkstore -nologo -wrl {wallet_local_directory}/wallet -createCredential {wal_cred['cred_name']} {wal_cred['cred_username']} {wal_cred['cred_password']}", shell=True, check=True, capture_output=True, encoding='utf-8')
+        try:
+            subprocess.run(f"echo \"{wallet_password}\" | mkstore -nologo -wrl {wallet_local_directory}/wallet -createCredential {wal_cred['cred_name']} {wal_cred['cred_username']} {wal_cred['cred_password']}", shell=True, check=True, capture_output=True, encoding='utf-8')
+        except subprocess.CalledProcessError as e:
+            print("Command failed with exit code:", e.returncode)
+            print("Error output:", e.stdout + e.stderr)
+    
     print(f"{Fore.BLUE}INFO:{Fore.RESET} Populated the local Wallet")
 
     # Generate the tnsnames.ora file

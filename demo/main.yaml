@@ -66,6 +66,9 @@
     stat:
       path: /opt/oracle/oradata
     register: oradatastat
+  - name: Show oradatastat
+    debug:
+      var: oradatastat
   - name: Run the Oracle configuration
     shell:
       cmd: (echo "{{ oracle_password }}"; echo "{{ oracle_password }}";) | /etc/init.d/oracle-free-23ai configure >> /ora_free_logs/ora_free_silent_install.log 2>&1
@@ -312,7 +315,7 @@
       state: present
   - name: Deploy copy of wallet_test.sh
     copy:
-      src: files/wallet_test.sh
+      src: ../../wallet_test.sh
       dest: /home/oracle/wallets/wallet_test.sh
       owner: oracle
       group: oinstall

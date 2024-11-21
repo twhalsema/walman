@@ -12,7 +12,6 @@ echo "#################################################################"
 echo -e "${BLUE}INFO:${NC} Testing connections to each entry in the Wallet"
 
 CONN_ERRORS=''
-. ${HOME}/.bashrc
 export TNS_ADMIN=./tns_admin
 
 # Test sqlplus connections to each Credential listed in the tnsnames.ora
