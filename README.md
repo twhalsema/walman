@@ -191,12 +191,12 @@ Remove the `walman` entries from `/etc/hosts` on your local machine.
 <b>NOTE:</b> This section is for installing <b>Walman</b> manually. This section assumes that you already have an established Oracle database client/server environment in which you wish to use <b>Walman</b>. If you do not already have this in place, you can simulate an environment and try <b>Walman</b> by using the steps in the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo) section.
 
 There are 3 components to <b>Walman</b>:
-1. Walman database
+1. Walman repository database
 2. `wallet_test.sh`
 3. `walman.py`
 
 <b>Step 1:</b>
-To set up the <b>Walman</b> database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, run the following to create the <b>Walman</b> database structure.
+To set up the <b>Walman</b> repository database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, run the following to create the <b>Walman</b> database structure.
 ```bash
 @walmandb_install.sql
 ```
@@ -213,6 +213,7 @@ Copy the `walman.py` file to your <b>Walman</b> server.
 Edit `walman.py` script. In the <b>Global Variables</b> near the top of the script:
 - Set the `local_wallets_director` variable to the directory where you placed the `wallet_test.sh` file.
 - Set the `walman_vault` variable to the name of your 1Password vault.
+- Set the `walman_tns_name` to match the tnsnames.ora entry name for your <b>Walman</b> repository database.
 
 
 <b>Step 5:</b>
