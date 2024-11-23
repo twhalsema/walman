@@ -21,6 +21,7 @@ import time
 search_string = ""
 local_wallets_directory = "/home/oracle/wallets"
 walman_vault = "walman_test"
+walman_tns_name = 'WALMANDB_WALMAN'
 
 def confirm_yes_no(prompt_in: str) -> bool:
 
@@ -1382,7 +1383,7 @@ def wallet_view(wallet_id: int, wallet_name: str):
 
 # Start of the program execution - Open connection to WALMANDB as WALMAN user, and display the main menu
 oracledb.init_oracle_client()
-walmandb_conn = oracledb.connect(externalauth=True, dsn="WALMANDB_WALMAN")
+walmandb_conn = oracledb.connect(externalauth=True, dsn="{walman_tns_name}")
 walmandb_conn.autocommit = True
 disp_menu_main()
 program_exit()
