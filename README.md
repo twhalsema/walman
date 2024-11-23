@@ -234,6 +234,10 @@ Install and log in to the 1password CLI using the instructions found here: 1pass
 echo 'export OP_SERVICE_ACCOUNT_TOKEN=<your-1password-token>' >> ~/.bashrc
 ```
 
+<b>Step 8:</b> Configure an Oracle wallet in `/home/oracle/wallets/walman_wallet` to be used by `walman.py` to connect to your <b>Walman</b> repository database.  
+><b>Note:</b>This step is currently missing from this document, and detailed steps will be added here or built directly into the product soon. - TH, 2024-11-21.
+
+<b>Step 9:</b> [Run Walman](https://github.com/twhalsema/walman/edit/main/README.md#run-walman)
 
 ## Walman Database ERD
 ![Walman database ERD](/docimages/walman_erd.png)
