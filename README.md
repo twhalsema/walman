@@ -1,6 +1,16 @@
 # Walman
 ## Overview
-`walman.py` is a Python script which stores information about Oracle wallets in a database and uses that information to generate Oracle wallet files, populate them with credentials pulled from 1password.com, and deploy those Oracle wallets to remote servers/directories. Applications can then use those Oracle wallets to securely connect to Oracle databases without storing cleartext passwords in configuration files.
+<b>Walman</b> is a Python application which stores information about Oracle wallets in a database and uses that information to generate Oracle wallet files, populate them with credentials pulled from 1password.com, and deploy those Oracle wallets to remote servers/directories. Applications can then use those Oracle wallets to securely connect to Oracle databases without storing cleartext passwords in configuration files.
+
+## Glossary
+The following terms will be used throughout this document.
+
+|Term|Description|
+|-----:|---------------|
+|Credential|A record stored in the <b>Walman</b> database which represents an Oracle connection string and the 1password entry associated with it. When added to a Wallet, the username/password in the 1password entry will be queried to populate an <b>Oracle wallet</b>.|
+|Oracle wallet|An <b>Oracle wallet</b> is a set of files which securely store database login credentials (username/password pairs). Each username/password pair stored in an <b>Oracle wallet</b> is associated with a connection string or an alias name pointing to one. Oracle wallets require their own password in order to create or modify them. Oracle wallets are capable of other functions, but those are outside the scope of <b>Walman</b>.|
+|Site|A record stored in the <b>Walman</b> database which repesents a server and directory. When assigned to a <b>Wallet</b>, the generated <b>Oracle wallet</b> will be deployed to that server/directory.|
+|Wallet|When the word <b>Wallet</b> is used on its own (instead of <b>Oracle wallet</b>), it is a record stored in the <b>Walman</b> database which represents an Oracle wallet which can be generated and deployed. Each <b>Wallet</b> has a 1password entry associated with it. This is the password used when creating/modifying the <b>Oracle wallet</b>.|
 
 ## Walman Demo
 ### DEMO - Overview
@@ -70,7 +80,7 @@ Once the installation completes, you should have the following:
 |-----:|---------------|
 |Oracle server|This container/server `walmandbserver` is running <b>Oracle Database 23ai Free</b> with 3 PDBs - 1 for the <b>Walman</b> database and 2 for testing Oracle wallets.|
 |Walman server|This container/server `walmandbclient1` has the <b>Oracle client</b> as well as the `walman.py` program.|
-|Oracle client|This container/server `walmandbclient2` is an additional Oracle client container/VM. This is just here in case you want to test remotely deploying Oracle Wallets with `walman.py`.|
+|Oracle client|This container/server `walmandbclient2` is an additional Oracle client container/VM. This is just here in case you want to test remotely deploying Oracle wallets with `walman.py`.|
 |WALMANDB|The `WALMANDB` pluggable database will be populated with some demo data to make trying `walman.py` more useful and intuitive.|
 |1Password|Your `walman_test` vault in 1Password will be populated with some demo data to make trying `walman.py` more useful and intuitive.|
 
@@ -136,9 +146,9 @@ You will be presented with the `walman.py` <b>MAIN MENU</b>.
 <b>Step 7:</b> Observe the details stored for this Wallet. It contains 8 Credentials, and it is configured to be deployed to 2 Sites.  
 <b>Step 8:</b> Select `2) Generate/Deploy Wallet`.  
 <b>Step 9:</b> Select `1) Generate Wallet locally`. Enter `y` at the prompt.  
-<b>Step 10:</b> Observe the output. You will see an Oracle Wallet generated locally on `walmandbclient1` using information retrieved from 1Password. It will also test Oracle database connections using the 8 Credentials stored in the Oracle Wallet.  
+<b>Step 10:</b> Observe the output. You will see an Oracle wallet generated locally on `walmandbclient1` using information retrieved from 1Password. It will also test Oracle database connections using the 8 Credentials stored in the Oracle wallet.  
 <b>Step 11:</b> Select `3) Deploy Wallet remotely`.  
-<b>Step 12:</b> Observe the output. You will see the Oracle Wallet deployed to the 2 Sites listed earlier in <b>Step 7</b>. It will also remotely test Oracle database connections using the 8 Credentials stored in the Oracle Wallet from each of the Sites.  
+<b>Step 12:</b> Observe the output. You will see the Oracle wallet deployed to the 2 Sites listed earlier in <b>Step 7</b>. It will also remotely test Oracle database connections using the 8 Credentials stored in the Oracle wallet from each of the Sites.  
 <b>Step 13:</b> Select `q) Quit` to close `walman.py`.  
 <b>Step 14:</b> Return to your original Terminal tab/window logged in to `walmandbclient2`. Run the following:  
 ```bash
@@ -146,16 +156,16 @@ ls -la
 cd wallets/all_test_dbs_and_users
 ls -la *
 ```
-Observe that the Oracle Wallet files are now present on this server and directory which had previously been assigned as one of the Sites for this Wallet.
+Observe that the Oracle wallet files are now present on this server and directory which had previously been assigned as one of the Sites for this Wallet.
 
-<b>Step 15:</b> Run the following to use the Oracle Wallet to test a database connection.
+<b>Step 15:</b> Run the following to use the Oracle wallet to test a database connection.
 ```bash
 export TNS_ADMIN=/home/oracle/wallets/all_test_dbs_and_users/tns_admin
 sqlplus /@TESTPDB1_TESTUSER12
 show con_name;
 show user;
 ```
-<b>Step 16:</b> Observe that you have logged in to the `TESTPDB1` database as the `TESTUSER12` user via the Oracle Wallet that you remotely deployed from `walman.py`. Congratulations!
+<b>Step 16:</b> Observe that you have logged in to the `TESTPDB1` database as the `TESTUSER12` user via the Oracle wallet that you remotely deployed from `walman.py`. Congratulations!
 
 
 ### DEMO - Uninstall Walman Demo
@@ -177,16 +187,6 @@ sudo vi /etc/hosts
 ```
 Remove the `walman` entries from `/etc/hosts` on your local machine.
 
-## Glossary
-The following terms will be used throughout this document.
-
-|Term|Description|
-|-----:|---------------|
-|Credential|A record stored in the <b>Walman</b> database which represents an Oracle connection string and the 1password entry associated with it. When added to a Wallet, the username/password in the 1password entry will be queried to populate an <b>Oracle wallet</b>.|
-|Oracle wallet|An <b>Oracle wallet</b> is a set of files which securely store database login credentials (username/password pairs). Each username/password pair stored in an <b>Oracle wallet</b> is associated with a connection string or an alias name pointing to one. Oracle wallets require their own password in order to create or modify them. Oracle wallets are capable of other functions, but those are outside the scope of <b>Walman</b>.|
-|Site|A record stored in the <b>Walman</b> database which repesents a server and directory. When assigned to a <b>Wallet</b>, the generated <b>Oracle wallet</b> will be deployed to that server/directory.|
-|Wallet|When the word <b>Wallet</b> is used on its own (instead of <b>Oracle wallet</b>), it is a record stored in the <b>Walman</b> database which represents an Oracle wallet which can be generated and deployed. Each <b>Wallet</b> has a 1password entry associated with it. This is the password used when creating/modifying the <b>Oracle wallet</b>.|
-
 ## Install Walman (Manual method)
 <b>NOTE:</b> This section is for installing <b>Walman</b> manually. This section assumes that you already have an established Oracle database client/server environment in which you wish to use <b>Walman</b>. If you do not already have this in place, you can simulate an environment and try <b>Walman</b> by using the steps in the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo) section.
 
@@ -204,7 +204,7 @@ Refer to the [Walman Database ERD](https://github.com/twhalsema/walman/blob/main
 
 <b>Step 2:</b>
 Copy the `wallet_test.sh` file to the `/home/oracle/wallets` directory on whatever server you intend to use as your <b>Walman</b> server. This server must have the full Oracle client installed with access to `sqlplus` and `mkstore` utilities.
-This directory will be used by `walman.py` to store locally generated Oracle Wallet files. However, if you need to use a different location, instructions will be provided later on how to do this. For now, copy `wallet_test.sh` to whatever directory you will use for this purpose.
+This directory will be used by `walman.py` to store locally generated Oracle wallet files. However, if you need to use a different location, instructions will be provided later on how to do this. For now, copy `wallet_test.sh` to whatever directory you will use for this purpose.
 
 <b>Step 3:</b>
 Copy the `walman.py` file to your <b>Walman</b> server.
