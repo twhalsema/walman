@@ -174,7 +174,7 @@ If you would like to fully uninstall the <b>Walman</b> demo, run the following f
 #### Docker Containers method
 ```bash
 cd demo
-./cleaup.sh
+./cleanup.sh
 ```
 
 #### Virtual Machines method
