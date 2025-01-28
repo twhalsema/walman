@@ -90,9 +90,9 @@ Do the following to launch `walman.py`:
 
 #### Docker Containers method
 ```bash
-ssh oracle@172.48.0.122
+ssh oracle@localhost -p 55122
     # Enter "oracle" at the ssh password prompt.
-    # You will then be prompted for your <b>1Password Service Account Token</b> when you log in for the first time.
+    # You will then be prompted for your 1Password Service Account Token when you log in for the first time.
 python3 walman.py
 ```
 > <b>Troubleshooting:</b>

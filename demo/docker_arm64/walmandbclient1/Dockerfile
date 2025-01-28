@@ -37,7 +37,7 @@ RUN unzip -o /home/oracle/instantclient-basic-linux.arm64-19.25.0.0.0dbru.zip -d
  && unzip -o /home/oracle/instantclient-sqlplus-linux.arm64-19.25.0.0.0dbru.zip -d /home/oracle/oracle_client \
  && unzip -o /home/oracle/sqlcl-24.3.1.311.1631.zip -d /home/oracle/oracle_client/instantclient_19_25 \
  && ln -s /home/oracle/oracle_client/instantclient_19_25 /home/oracle/oracle_client/instantclient_19_25/lib \
- && echo '#!/bin/bash\n# set classpath for mkstore - align this to your local SQLcl installation\nSQLCL=/home/oracle/oracle_client/sqlcl/lib\nCLASSPATH=${SQLCL}/oraclepki.jar:${SQLCL}/osdt_core.jar:${SQLCL}/osdt_cert.jar\n# simulate mkstore command\njava -classpath ${CLASSPATH} oracle.security.pki.OracleSecretStoreTextUI  "$@"' > /home/oracle/oracle_client/instantclient_19_25/mkstore \
+ && echo '#!/bin/bash\nSQLCL=/home/oracle/oracle_client/instantclient_19_25/sqlcl/lib\nCLASSPATH=${SQLCL}/oraclepki.jar:${SQLCL}/osdt_core.jar:${SQLCL}/osdt_cert.jar\njava -classpath ${CLASSPATH} oracle.security.pki.OracleSecretStoreTextUI  "$@"' > /home/oracle/oracle_client/instantclient_19_25/mkstore \
  && chmod 750 /home/oracle/oracle_client/instantclient_19_25/mkstore \
  && tar -xf /home/oracle/wallets/walman_wallet/tns_admin/wallet.tar -C /home/oracle/wallets/walman_wallet/tns_admin \
  && touch /home/oracle/op_var \ 

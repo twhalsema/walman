@@ -13,8 +13,8 @@ services:
       - "walmandbclient2.example.com:172.48.0.123"
     hostname: walmandbserver.example.com
     networks:
-     walmannet:
-       ipv4_address: 172.48.0.121
+      walmannet:
+        ipv4_address: 172.48.0.121
     ports:
       - name: ssh
         target: 22
@@ -28,8 +28,8 @@ services:
       - "walmandbserver.example.com:172.48.0.121"
     hostname: walmandbclient1.example.com
     networks:
-     walmannet:
-       ipv4_address: 172.48.0.122
+      walmannet:
+        ipv4_address: 172.48.0.122
     ports:
       - name: ssh
         target: 22
@@ -43,8 +43,8 @@ services:
       - "walmandbserver.example.com:172.48.0.121"
     hostname: walmandbclient2.example.com
     networks:
-     walmannet:
-       ipv4_address: 172.48.0.123
+      walmannet:
+        ipv4_address: 172.48.0.123
     ports:
       - name: ssh
         target: 22
