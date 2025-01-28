@@ -48,7 +48,11 @@ Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/
 
 #### Docker Containers method
 ```bash
-cd demo/docker
+# x86_64 only:
+  cd demo/docker
+# aarch64/ARM64 only:
+  cd demo/docker_arm64
+
 docker compose up -d
 ```
 
@@ -111,7 +115,7 @@ This section is provided to walk you through a scenario showing the capability o
 <b>Step 1:</b> Run the following from the `demo` directory.
 ##### Docker Containers method
 ```bash
-ssh oracle@172.48.0.123
+ssh oracle@localhost -p 55123
     # Enter "oracle" at the ssh password prompt.
 ls -la
 ```
@@ -127,7 +131,7 @@ Observe that there currently is no `wallets` sub-directory present here.
 <b>Step 2:</b> Open another Terminal tab/window on your local machine, and run the following from the `demo` directory.
 ##### Docker Containers method
 ```bash
-ssh oracle@172.48.0.122
+ssh oracle@localhost -p 55122
 python3 walman.py
 ```
 ##### Virtual Machines method
@@ -173,7 +177,11 @@ If you would like to fully uninstall the <b>Walman</b> demo, run the following f
 
 #### Docker Containers method
 ```bash
-cd demo
+# x86_64 only:
+  cd demo/docker
+# aarch64/ARM64 only:
+  cd demo/docker_arm64
+
 ./cleanup.sh
 ```
 
@@ -214,7 +222,7 @@ Edit `walman.py` script. In the <b>Global Variables</b> near the top of the scri
 - Set the `local_wallets_director` variable to the directory where you placed the `wallet_test.sh` file.
 - Set the `walman_vault` variable to the name of your 1Password vault.
 - Set the `walman_tns_name` to match the tnsnames.ora entry name for your <b>Walman</b> repository database.
-><b>Note:</b>As of 22-Nov-2024, the `walman_tns_name` variable does not work. I will update the code for this in the next week or 2. For now, the <b>Walman</b> repository database tnsnames.ora entry must be called `WALMANDB_WALMAN`.
+><b>Note:</b>As of 28-Jan-2025, the `walman_tns_name` variable does not work. I will update the code for this in a future update. For now, the <b>Walman</b> repository database tnsnames.ora entry must be called `WALMANDB_WALMAN`.
 
 
 <b>Step 5:</b>
