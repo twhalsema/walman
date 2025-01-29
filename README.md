@@ -138,7 +138,7 @@ python3 walman.py
 ```bash
 ssh -F /tmp/vagrant_sshconfig.txt walmandbclient1
 sudo su - oracle
-python walman.py
+python3 walman.py
 ```
 
 You will be presented with the `walman.py` <b>MAIN MENU</b>.
