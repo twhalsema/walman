@@ -204,7 +204,7 @@ There are 3 components to <b>Walman</b>:
 3. `walman.py`
 
 <b>Step 1:</b>
-To set up the <b>Walman</b> repository database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, run the following to create the <b>Walman</b> database structure.
+To set up the <b>Walman</b> repository database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, create a schema named `WALMAN`, and then run the following to create the <b>Walman</b> repository tables in that schema.
 ```bash
 @walmandb_install.sql
 ```
