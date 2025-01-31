@@ -219,7 +219,7 @@ Copy the `walman.py` file to your <b>Walman</b> server.
 
 <b>Step 4:</b>
 Edit `walman.py` script. In the <b>Global Variables</b> near the top of the script:
-- Set the `local_wallets_director` variable to the directory where you placed the `wallet_test.sh` file.
+- Set the `local_wallets_directory` variable to the directory where you placed the `wallet_test.sh` file.
 - Set the `walman_vault` variable to the name of your 1Password vault.
 - Set the `walman_tns_name` to match the tnsnames.ora entry name for your <b>Walman</b> repository database.
 ><b>Note:</b>As of 28-Jan-2025, the `walman_tns_name` variable does not work. I will update the code for this in a future update. For now, the <b>Walman</b> repository database tnsnames.ora entry must be called `WALMANDB_WALMAN`.
