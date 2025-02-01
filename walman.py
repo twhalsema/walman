@@ -13,6 +13,7 @@ from pathlib import Path
 import configparser
 import json
 import oracledb
+import os
 import paramiko
 import secrets
 import shutil
@@ -1477,10 +1478,11 @@ def walman_initialize(walman_repo_hostname: str, walman_repo_port: int, walman_r
 
 
 # Start of the program execution - Open connection to WALMANDB as WALMAN user, and display the main menu
+tns_admin = local_wallets_directory + "/walman_wallet/tns_admin"
+os.putenv('TNS_ADMIN', tns_admin)
 oracledb.init_oracle_client()
 try:
-    conn_config_dir = "{local_wallets_directory}/walman_wallet"
-    walmandb_conn = oracledb.connect(externalauth=True, dsn=walman_tns_name, config_dir=conn_config_dir)
+    walmandb_conn = oracledb.connect(externalauth=True, dsn=walman_tns_name)
     walmandb_conn.autocommit = True
 except oracledb.Error as e:
     error_obj, = e.args

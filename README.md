@@ -198,56 +198,60 @@ Remove the `walman` entries from `/etc/hosts` on your local machine.
 ## Install Walman (Manual method)
 <b>NOTE:</b> This section is for installing <b>Walman</b> manually. This section assumes that you already have an established Oracle database client/server environment in which you wish to use <b>Walman</b>. If you do not already have this in place, you can simulate an environment and try <b>Walman</b> by using the steps in the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo) section.
 
-There are 3 components to <b>Walman</b>:
+There are 4 components to <b>Walman</b>:
 1. Walman repository database
 2. `wallet_test.sh`
-3. `walman.py`
+3. `walman.conf`
+4. `walman.py`
 
-<b>Step 1:</b>
+<b>Step 1:</b> 
 To set up the <b>Walman</b> repository database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, create a schema named `WALMAN`, and then run the following to create the <b>Walman</b> repository tables in that schema.
 ```bash
 @walmandb_install.sql
 ```
 Refer to the [Walman Database ERD](https://github.com/twhalsema/walman/blob/main/README.md#walman-database-erd) provided above to verify table structure.
 
-<b>Step 2:</b>
-Copy the `wallet_test.sh` file to the `/home/oracle/wallets` directory on whatever server you intend to use as your <b>Walman</b> server. This server must have the full Oracle client installed with access to `sqlplus` and `mkstore` utilities.
-This directory will be used by `walman.py` to store locally generated Oracle wallet files. However, if you need to use a different location, instructions will be provided later on how to do this. For now, copy `wallet_test.sh` to whatever directory you will use for this purpose.
+<b>Step 2:</b> 
+Choose a server on which to run Walman (hereafter referred to as the Walman Server). This server will need to have the full Oracle client installed with access to `sqlplus` and `mkstore` utilities.
+Copy the following files to a directory on the Walman Server: `walman.conf` and `walman.py`
 
-<b>Step 3:</b>
+<b>Step 3:</b> 
+Modify the `walman.conf` file if needed. The following variables are configured in this file.
+|Variable|Description|Default Value|
+|-----:|---------------|---------------|
+|local_wallets_directory|This is the directory where Walman will generate local wallet files before they are deployed to remote servers.|/home/oracle/wallets|
+|walman_tns_name|This is the name of the tnsnames.ora entry that will be used by Walman to connect to the Walman Repository database. Walman uses its own separate TNS_ADMIN directory.|WALMANDB_WALMAN|
+|walman_vault|This is the name of the Vault in your 1Password account in which Walman will store and read credentials.|walman_test|
+
+<b>Step 4:</b> 
+Copy the `wallet_test.sh` file to Walman Server in the directory that you set for the `local_wallets_directory` variable in the `walman.conf` file.
+
+<b>Step 5:</b> 
 Copy the `walman.py` file to your <b>Walman</b> server.
 
-<b>Step 4:</b>
-Edit `walman.py` script. In the <b>Global Variables</b> near the top of the script:
-- Set the `local_wallets_directory` variable to the directory where you placed the `wallet_test.sh` file.
-- Set the `walman_vault` variable to the name of your 1Password vault.
-- Set the `walman_tns_name` to match the tnsnames.ora entry name for your <b>Walman</b> repository database.
-><b>Note:</b>As of 28-Jan-2025, the `walman_tns_name` variable does not work. I will update the code for this in a future update. For now, the <b>Walman</b> repository database tnsnames.ora entry must be called `WALMANDB_WALMAN`.
-
-
-<b>Step 5:</b>
+<b>Step 6:</b> 
 Run the following commands to install Python and the necessary packages on the <b>Walman</b> server.
 ```bash
 dnf install python3
-pip install onepassword-sdk
 pip install colorama
+pip install onepassword-sdk
 pip install oracledb
 pip install paramiko
 pip install sh
 dnf config-manager
 ```
-<b>Step 6:</b>
+<b>Step 7:</b> 
 Install and log in to the 1password CLI using the instructions found here: 1password CLI documentation](https://developer.1password.com/docs/cli/get-started/)
 
-<b>Step 7:</b> Store your <b>1Password Service Account Token</b> in `~/.bashrc`. This may not be secure enough for your organization. If not, explore alternative methods in [1password CLI documentation](https://developer.1password.com/docs/cli/get-started/)
+<b>Step 8:</b> 
+Store your <b>1Password Service Account Token</b> in `~/.bashrc`. This may not be secure enough for your organization. If not, explore alternative methods in [1password CLI documentation](https://developer.1password.com/docs/cli/get-started/)
 ```bash
 echo 'export OP_SERVICE_ACCOUNT_TOKEN=<your-1password-token>' >> ~/.bashrc
 ```
 
-<b>Step 8:</b> Configure an Oracle wallet in `/home/oracle/wallets/walman_wallet` to be used by `walman.py` to connect to your <b>Walman</b> repository database.  
-><b>Note:</b>This step is currently missing from this document, and detailed steps will be added here or built directly into the product soon. - TH, 2024-11-21.
-
-<b>Step 9:</b> [Run Walman](https://github.com/twhalsema/walman/edit/main/README.md#run-walman)
+<b>Step 9:</b> 
+[Run Walman](https://github.com/twhalsema/walman/edit/main/README.md#run-walman)
+><b>NOTE:</b> On the first run, you will be prompted to enter connection information for the Walman Repository database. A wallet will be generated based on the values you enter, and it will be stored in the `walman_wallet` sub-directory under the directory you specified for `local_wallets_directory` in the `walman.conf` file.
 
 ## Walman Database ERD
 ![Walman database ERD](/docimages/walman_erd.png)

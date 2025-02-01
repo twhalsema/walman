@@ -43,7 +43,7 @@ RUN unzip -o /home/oracle/instantclient-basic-linux.arm64-19.25.0.0.0dbru.zip -d
  && tar -xf /home/oracle/wallets/walman_wallet/tns_admin/wallet.tar -C /home/oracle/wallets/walman_wallet/tns_admin \
  && touch /home/oracle/op_var \ 
  && chmod 600 /home/oracle/op_var \
- && echo 'export ORACLE_HOME=/home/oracle/oracle_client/instantclient_19_25\nexport LD_LIBRARY_PATH=${ORACLE_HOME}\nexport PATH=${ORACLE_HOME}:${PATH}\nexport TNS_ADMIN=/home/oracle/wallets/walman_wallet/tns_admin\n. /home/oracle/op_var\n./verify_walman_demo_setup.sh\n. /home/oracle/op_var' >> /home/oracle/.bashrc \
+ && echo 'export ORACLE_HOME=/home/oracle/oracle_client/instantclient_19_25\nexport LD_LIBRARY_PATH=${ORACLE_HOME}\nexport PATH=${ORACLE_HOME}:${PATH}\n. /home/oracle/op_var\n./verify_walman_demo_setup.sh\n. /home/oracle/op_var' >> /home/oracle/.bashrc \
  && echo 'NAMES.DIRECTORY_PATH=(TNSNAMES,EZCONNECT)\nSQLNET.WALLET_OVERRIDE=TRUE\nWALLET_LOCATION=(SOURCE=(METHOD=FILE)(METHOD_DATA=(DIRECTORY=/home/oracle/wallets/walman_wallet/tns_admin/wallet)))' > /home/oracle/wallets/walman_wallet/tns_admin/sqlnet.ora \
  && echo 'WALMANDB_WALMAN =  (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(Host = walmandbserver.example.com )(Port = 1521)))(CONNECT_DATA = (SERVICE_NAME = walmandb)))' > /home/oracle/wallets/walman_wallet/tns_admin/tnsnames.ora
 
