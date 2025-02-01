@@ -11,6 +11,7 @@ from colorama import Fore
 from datetime import datetime
 from pathlib import Path
 import configparser
+import getpass
 import json
 import oracledb
 import os
@@ -899,8 +900,7 @@ def disp_menu_walman_initialize():
     walman_repo_service_name = input("Enter the Service Name for your Walman Repository database: ")
     walman_repo_service_name = walman_repo_service_name.strip()
 
-    walman_repo_password = input("Enter the password for the WALMAN account in your Walman Repository database: ")
-    walman_repo_password = walman_repo_password.strip()
+    walman_repo_password = getpass.getpass("Enter the password for the WALMAN account in your Walman Repository database: ")
 
     # Show entered information for confirmation
     print("")
