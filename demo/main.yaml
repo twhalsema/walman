@@ -346,11 +346,6 @@
     unarchive:
       src: files/wallet.tar
       dest: /home/oracle/wallets/walman_wallet/tns_admin
-  - name: Set new default TNS_ADMIN to allow use of WALMANDB_WALMAN Oracle wallet entry
-    lineinfile:
-      path: /home/oracle/.bashrc
-      line: export TNS_ADMIN=/home/oracle/wallets/walman_wallet/tns_admin
-      state: present
   - name: Deploy copy of wallet_test.sh
     copy:
       src: ../../wallet_test.sh
