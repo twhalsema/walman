@@ -358,6 +358,13 @@
       owner: oracle
       group: oinstall
       mode: '0750'
+  - name: Deploy walman.conf
+    copy:
+      src: ../../walman.conf
+      dest: /home/oracle/walman.conf
+      owner: oracle
+      group: oinstall
+      mode: '0640'
   - name: Deploy walman.py
     copy:
       src: ../../walman.py

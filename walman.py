@@ -10,18 +10,22 @@
 from colorama import Fore
 from datetime import datetime
 from pathlib import Path
+import configparser
 import json
 import oracledb
 import paramiko
+import secrets
 import shutil
 import subprocess
 import time
 
-# Global Variables
+# Global Variables and values from walman.conf
+config = configparser.ConfigParser()
+config.read('walman.conf')
+local_wallets_directory = config['DEFAULTS']['local_wallets_directory']
+walman_vault = config['DEFAULTS']['walman_vault']
+walman_tns_name = config['DEFAULTS']['walman_tns_name']
 search_string = ""
-local_wallets_directory = "/home/oracle/wallets"
-walman_vault = "walman_test"
-walman_tns_name = 'WALMANDB_WALMAN'
 
 def confirm_yes_no(prompt_in: str) -> bool:
 
@@ -466,7 +470,7 @@ def disp_menu_wallet_create():
     if confirm_yes_no("Would you like to proceed with Wallet creation?"):     # Yes
         wallet_create(wallet_name, wallet_description)
     else:                                                                     # No
-        print(f"{Fore.BLUE}INFO:{Fore.RESET} User selected to not delete the Wallet. \n")
+        print(f"{Fore.BLUE}INFO:{Fore.RESET} User selected to not create the Wallet. \n")
 
     disp_menu_main()
 
@@ -492,7 +496,7 @@ def disp_menu_wallet_delete(modwallet_id: int, modwallet_name: str):
     if confirm_yes_no(f"Are you certain that you want to {Fore.YELLOW}permanently delete{Fore.RESET} the selected Wallet?"):     # Yes
         wallet_delete(modwallet_id, modwallet_name)
     else:                                                                                                                        # No                                                                                                       # No
-        print(f"{Fore.BLUE}INFO:{Fore.RESET} User selected to not create the Credential. \n")
+        print(f"{Fore.BLUE}INFO:{Fore.RESET} User selected to not delete the Credential. \n")
     disp_menu_main()
 
 def disp_menu_wallet_deploy(modwallet_id: int, modwallet_name: str):
@@ -874,6 +878,46 @@ def disp_menu_wallet_modify_sites_unassign(modwallet_id: int, modwallet_name: st
 
     disp_menu_wallet_manage(modwallet_id, modwallet_name)
 
+def disp_menu_walman_initialize():
+
+    # Display menu header
+    print("")
+    print("#########################################################################################")
+    print("##############" + f"WALMAN - INITIALIZE REPOSITORY".center(61) + "##############")
+    print("#########################################################################################")
+    print("")
+
+    print(f"{Fore.BLUE} INFO:{Fore.RESET} Please enter the prompted information to generate a new Walman Repository wallet.")
+
+    walman_repo_hostname = input("Enter the hostname for your Walman Repository database: ")
+    walman_repo_hostname = walman_repo_hostname.strip()
+
+    walman_repo_port = input("Enter the Port number for your Walman Repository database: ")
+    walman_repo_port = walman_repo_port.strip()
+
+    walman_repo_service_name = input("Enter the Service Name for your Walman Repository database: ")
+    walman_repo_service_name = walman_repo_service_name.strip()
+
+    walman_repo_password = input("Enter the password for the WALMAN account in your Walman Repository database: ")
+    walman_repo_password = walman_repo_password.strip()
+
+    # Show entered information for confirmation
+    print("")
+    print(f"{Fore.BLUE}INFO:{Fore.RESET} The Walman Repository wallet will be created with the following settings:")
+    print(f"Walman Repo Hostname: {Fore.YELLOW}[{walman_repo_hostname}]{Fore.RESET}")
+    print(f"Walman Repo Port: {Fore.YELLOW}[{walman_repo_port}]{Fore.RESET}")
+    print(f"Walman Repo Service Name: {Fore.YELLOW}[{walman_repo_service_name}]{Fore.RESET}")
+    print(f"Walman Repo TNS Alias: {Fore.YELLOW}[{walman_tns_name}]{Fore.RESET}")
+    print(f"Walman Repo wallet location: {Fore.YELLOW}[{local_wallets_directory}/walman_wallet]{Fore.RESET}")
+    print("")
+
+    # Prompt the user to verify if the repo wallet should be created
+    if confirm_yes_no("Would you like to proceed with Walman Repository wallet creation?"):     # Yes
+        walman_initialize(walman_repo_hostname, walman_repo_port, walman_repo_service_name, walman_repo_password)
+    else:                                                                     # No
+        print(f"{Fore.BLUE}INFO:{Fore.RESET} User selected to not generate the Walman Repository wallet. \n")
+        exit()
+
 def passmgr_search(tag: str, search_prompt: bool, search_string_in: str) -> list:
     global search_string
 
@@ -946,7 +990,7 @@ def wallet_create(wallet_name: str, wallet_description: str):
             print(f"{Fore.BLUE}INFO:{Fore.RESET} A record for {Fore.YELLOW}[{wallet_name}]{Fore.RESET} exists in the Passmgr.")
             wallet_name_exists = True
 
-     # Attempt to insert the provided data into the database. If it fails, print the error code/message and return the user to the calling menu.
+    # Attempt to insert the provided data into the database. If it fails, print the error code/message and return the user to the calling menu.
     try:
         cursor = walmandb_conn.cursor()
         cursor.execute("""INSERT INTO walman.wallets (wallet_passmgr_entry, wallet_description) VALUES (:wallet_passmgr_entry, :wallet_description)""", [wallet_name, wallet_description])
@@ -1215,7 +1259,7 @@ def wallet_generate_locally(wallet_id: int, wallet_name: str, wallet_test: bool)
         except subprocess.CalledProcessError as e:
             print("Command failed with exit code:", e.returncode)
             print("Error output:", e.stdout + e.stderr)
-    
+
     print(f"{Fore.BLUE}INFO:{Fore.RESET} Populated the local Wallet")
 
     # Generate the tnsnames.ora file
@@ -1381,9 +1425,73 @@ def wallet_view(wallet_id: int, wallet_name: str):
     headers = ("Site Host Name", "Site Directory", "Site Owner")
     print_table(query_results, headers)
 
+def walman_initialize(walman_repo_hostname: str, walman_repo_port: int, walman_repo_service_name: str, walman_repo_password: str):
+    print(f"{Fore.BLUE}INFO:{Fore.RESET} Initializing Walman...")
+    Path(local_wallets_directory + "/walman_wallet").mkdir(parents = True, exist_ok = True)
+    Path(local_wallets_directory + "/walman_wallet/tns_admin").mkdir(parents = True, exist_ok = True)
+    Path(local_wallets_directory + "/walman_wallet/wallet").mkdir(parents = True, exist_ok = True)
+
+    # Delete the wallet repo's local files if they already exist
+    Path(local_wallets_directory + "/walman_wallet/tns_admin/sqlnet.ora").unlink(missing_ok = True)
+    Path(local_wallets_directory + "/walman_wallet/tns_admin/tnsnames.ora").unlink(missing_ok = True)
+    Path(local_wallets_directory + "/walman_wallet/wallet/cwallet.sso").unlink(missing_ok = True)
+    Path(local_wallets_directory + "/walman_wallet/wallet/cwallet.sso.lck").unlink(missing_ok = True)
+    Path(local_wallets_directory + "/walman_wallet/wallet/ewallet.p12").unlink(missing_ok = True)
+    Path(local_wallets_directory + "/walman_wallet/wallet/ewallet.p12.lck").unlink(missing_ok = True)
+
+    # Create the Wallet's new sqlnet.ora file
+    sqlnet_ora_file = open(local_wallets_directory + "/walman_wallet/tns_admin/sqlnet.ora", "w")
+    sqlnet_ora_file.write("SQLNET.WALLET_OVERRIDE = TRUE\n")
+    sqlnet_ora_file.write("SSL_CLIENT_AUTHENTICATION = FALSE\n")
+    sqlnet_ora_file.write("SSL_VERSION = 0\n")
+    sqlnet_ora_file.write(f"WALLET_LOCATION=(SOURCE=(METHOD=FILE)(METHOD_DATA=(DIRECTORY={local_wallets_directory}/walman_wallet/wallet)))\n")
+    sqlnet_ora_file.close()
+    print(f"{Fore.BLUE}INFO:{Fore.RESET} Generated the sqlnet.ora file for the Walman Repository wallet.")
+
+    # Generate the Walman Repository wallet files with random password
+    try:
+        walman_repo_wallet_password = secrets.token_urlsafe(16)
+        subprocess.run(f"echo \"{walman_repo_wallet_password}\n{walman_repo_wallet_password}\" | mkstore -nologo -wrl {local_wallets_directory}/walman_wallet/wallet -create", shell=True, check=True, capture_output=True, encoding='utf-8')
+    except subprocess.CalledProcessError as e:
+        print("Command failed with exit code:", e.returncode)
+        print("Error output:", e.stdout + e.stderr)
+
+    print(f"{Fore.BLUE}INFO:{Fore.RESET} Generated an empty Walman Repository wallet.")
+
+    # Populate the Walman Repository wallet with WALMAN usenrname/password
+    try:
+        subprocess.run(f"echo \"{walman_repo_wallet_password}\" | mkstore -nologo -wrl {local_wallets_directory}/walman_wallet/wallet -createCredential {walman_tns_name} WALMAN {walman_repo_password}", shell=True, check=True, capture_output=True, encoding='utf-8')
+    except subprocess.CalledProcessError as e:
+        print("Command failed with exit code:", e.returncode)
+        print("Error output:", e.stdout + e.stderr)
+
+    print(f"{Fore.BLUE}INFO:{Fore.RESET} Populated the Walman Respository wallet.")
+
+    # Generate the tnsnames.ora file
+    tnsnames_ora_file = open(local_wallets_directory + "/walman_wallet/tns_admin/tnsnames.ora", "w")
+    tnsnames_ora_file.write(f"{walman_tns_name} = (DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(Host = {walman_repo_hostname})(Port = {walman_repo_port})))(CONNECT_DATA = (SERVICE_NAME = {walman_repo_service_name})))")
+    tnsnames_ora_file.close()
+    print(f"{Fore.BLUE}INFO:{Fore.RESET} Generated the tnsnames.ora file for the Walman Repository wallet.")
+    print(f"{Fore.BLUE}INFO:{Fore.RESET} Walman Initialization complete. Please re-run walman.py. Exiting...")
+    exit()
+
+
 # Start of the program execution - Open connection to WALMANDB as WALMAN user, and display the main menu
 oracledb.init_oracle_client()
-walmandb_conn = oracledb.connect(externalauth=True, dsn="WALMANDB_WALMAN")
-walmandb_conn.autocommit = True
+try:
+    conn_config_dir = "{local_wallets_directory}/walman_wallet"
+    walmandb_conn = oracledb.connect(externalauth=True, dsn=walman_tns_name, config_dir=conn_config_dir)
+    walmandb_conn.autocommit = True
+except oracledb.Error as e:
+    error_obj, = e.args
+    print(f"{Fore.RED}ERROR:{Fore.RESET}{error_obj.message}")
+    print(f"{Fore.RED}ERROR:{Fore.RESET} Walman is unable to connect to the Walman Repository database.")
+
+    if confirm_yes_no("Would you like to run Walman Initialization to re-create the Walman Repository wallet?"):     # Yes
+        disp_menu_walman_initialize()
+    else:                                                                     # No
+        print(f"{Fore.BLUE}INFO:{Fore.RESET} User selected to not run Walman Initialization. Exiting... \n")
+        exit()
+
 disp_menu_main()
 program_exit()

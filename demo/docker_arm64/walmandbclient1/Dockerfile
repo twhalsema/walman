@@ -6,6 +6,7 @@ RUN useradd -m -s /bin/bash oracle \
 COPY --chown=oracle:oracle ./ssh_keys /home/oracle/.ssh
 COPY --chown=oracle:oracle --chmod=750 ./verify_walman_demo_setup.sh /home/oracle/
 ADD --chown=oracle:oracle https://raw.githubusercontent.com/twhalsema/walman/refs/heads/main/walman.py /home/oracle/
+ADD --chown=oracle:oracle https://raw.githubusercontent.com/twhalsema/walman/refs/heads/main/walman.conf /home/oracle/
 ADD --chown=oracle:oracle https://raw.githubusercontent.com/twhalsema/walman/refs/heads/main/demo/files/wallet.tar /home/oracle/wallets/walman_wallet/tns_admin/
 ADD --chown=oracle:oracle --chmod=750 https://raw.githubusercontent.com/twhalsema/walman/refs/heads/main/wallet_test.sh /home/oracle/wallets/
 ADD --chown=oracle:oracle https://download.oracle.com/otn_software/linux/instantclient/1925000/instantclient-basic-linux.arm64-19.25.0.0.0dbru.zip /home/oracle/
