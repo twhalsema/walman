@@ -138,7 +138,7 @@ python3 walman.py
 ```bash
 ssh -F /tmp/vagrant_sshconfig.txt walmandbclient1
 sudo su - oracle
-python walman.py
+python3 walman.py
 ```
 
 You will be presented with the `walman.py` <b>MAIN MENU</b>.
@@ -204,7 +204,7 @@ There are 3 components to <b>Walman</b>:
 3. `walman.py`
 
 <b>Step 1:</b>
-To set up the <b>Walman</b> repository database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, run the following to create the <b>Walman</b> database structure.
+To set up the <b>Walman</b> repository database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, create a schema named `WALMAN`, and then run the following to create the <b>Walman</b> repository tables in that schema.
 ```bash
 @walmandb_install.sql
 ```
@@ -219,7 +219,7 @@ Copy the `walman.py` file to your <b>Walman</b> server.
 
 <b>Step 4:</b>
 Edit `walman.py` script. In the <b>Global Variables</b> near the top of the script:
-- Set the `local_wallets_director` variable to the directory where you placed the `wallet_test.sh` file.
+- Set the `local_wallets_directory` variable to the directory where you placed the `wallet_test.sh` file.
 - Set the `walman_vault` variable to the name of your 1Password vault.
 - Set the `walman_tns_name` to match the tnsnames.ora entry name for your <b>Walman</b> repository database.
 ><b>Note:</b>As of 28-Jan-2025, the `walman_tns_name` variable does not work. I will update the code for this in a future update. For now, the <b>Walman</b> repository database tnsnames.ora entry must be called `WALMANDB_WALMAN`.
