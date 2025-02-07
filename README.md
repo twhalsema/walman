@@ -2,6 +2,21 @@
 ## Overview
 **Walman** is a Python application which stores information about Oracle wallets in a database and uses that information to generate Oracle wallet files, populate them with credentials pulled from 1password.com, and deploy those Oracle wallets to remote servers/directories. Applications can then use those Oracle wallets to securely connect to Oracle databases without storing cleartext passwords in configuration files.
 
+## Table of Contents
+- [Overview](#overview)
+- [Glossary](#glossary)
+- [Walman Demo](#walman-demo)
+  - [DEMO - Overview](#demo---overview)
+  - [DEMO - Installation Pre-Requisites](#demo---installation-pre-requisites)
+  - [DEMO - Install the Demo](#demo---install-the-demo)
+  - [DEMO - Environment](#demo---environment)
+  - [DEMO - Execute `walman.py`](#demo---execute-walmanpy)
+  - [DEMO - Scenario](#demo---scenario)
+  - [DEMO - Uninstall Walman Demo](#demo---uninstall-walman-demo)
+- [Install Walman (Manual method)](#install-walman-manual-method)
+- [Walman Repository Database ERD](#walman-repository-database-erd)
+- [Run Walman](#run-walman)
+
 ## Glossary
 The following terms will be used throughout this document.
 
@@ -14,9 +29,9 @@ The following terms will be used throughout this document.
 
 ## Walman Demo
 ### DEMO - Overview
-This git repo contains the files needed to demonstrate `walman.py` in a simulated environment with sample data/credentials. A [scenario](https://github.com/twhalsema/walman/?tab=readme-ov-file#demo---scenario) is also provided to demonstrate the benefits of **Walman**. 
+This git repo contains the files needed to demonstrate `walman.py` in a simulated environment with sample data/credentials. A [scenario](#demo---scenario) is also provided to demonstrate the benefits of **Walman**. 
 
->**WARNING:** The files used in the **Walman** demo should NOT be used in production. To install **Walman** for production use, please instead use the instructions in the [Install Walman (Manual Method)](https://github.com/twhalsema/walman/?tab=readme-ov-file#install-walman-manual-method) section.
+>**WARNING:** The files used in the **Walman** demo should NOT be used in production. To install **Walman** for production use, please instead use the instructions in the [Install Walman (Manual Method)](#install-walman-manual-method) section.
 
 There are 2 methods to install and run the **Walman** demo:  
 1. **Docker Containers** method - Currently x86_64 only. aarch64 version currently being developed.  
@@ -30,7 +45,7 @@ To use the **Walman** demo, you will need to have the following in place:
 - [Docker](https://docs.docker.com/engine/install/) installed
 - [Docker Compose](https://docs.docker.com/compose/install/) installed
 - Account on [1password.com](https://1password.com) with a vault called `walman_test` and a **Service Account** which has access to make changes in that vault.
-  > A guide on how to do this can be found here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
+  > A guide on how to do this can be found here: [1Password Service Account Configuration](OP_SERVICE_ACCOUNT.md)
 
 #### Virtual Machines method
 To use the **Walman** demo, you will need to have the following in place:
@@ -41,10 +56,10 @@ To use the **Walman** demo, you will need to have the following in place:
 - [Vagrant](https://developer.hashicorp.com/vagrant/downloads) installed on your local machine.
   > For aarch64/ARM64, at time of writing version 2.4.1 works but 2.4.2 does not. You must also run: `vagrant plugin install vagrant-vmware-desktop`
 - Account on [1password.com](https://1password.com) with a vault called `walman_test` and a **Service Account** which has access to make changes in that vault.
-  > A guide on how to do this can be found here: [1Password Service Account Configuration](https://github.com/twhalsema/walman/blob/main/OP_SERVICE_ACCOUNT.md)
+  > A guide on how to do this can be found here: [1Password Service Account Configuration](OP_SERVICE_ACCOUNT.md)
 
 ### DEMO - Install the Demo
-Once you have satisfied the above [Pre-Requisites](https://github.com/twhalsema/walman/blob/main/README.md#demo---installation-pre-requisites), run the following from the repo directory to install the **Walman** demo.
+Once you have satisfied the above [Pre-Requisites](#demo---installation-pre-requisites), run the following from the repo directory to install the **Walman** demo.
 
 #### Docker Containers method
 ```bash
@@ -88,7 +103,7 @@ Once the installation completes, you should have the following:
 |WALMANDB|The `WALMANDB` pluggable database will be populated with some demo data to make trying `walman.py` more useful and intuitive.|
 |1Password|Your `walman_test` vault in 1Password will be populated with some demo data to make trying `walman.py` more useful and intuitive.|
 
-### DEMO - Execute walman.py
+### DEMO - Execute `walman.py`
 Once you have the demo environment all set up, you're ready to run `walman.py` and give it a try.  
 Do the following to launch `walman.py`:  
 
@@ -196,20 +211,20 @@ sudo vi /etc/hosts
 Remove the `walman` entries from `/etc/hosts` on your local machine.
 
 ## Install Walman (Manual method)
-**NOTE:** This section is for installing **Walman** manually. This section assumes that you already have an established Oracle database client/server environment in which you wish to use **Walman**. If you do not already have this in place, you can simulate an environment and try **Walman** by using the steps in the [Walman Demo](https://github.com/twhalsema/walman/tree/main?tab=readme-ov-file#walman-demo) section.
+**NOTE:** This section is for installing **Walman** manually. This section assumes that you already have an established Oracle database client/server environment in which you wish to use **Walman**. If you do not already have this in place, you can simulate an environment and try **Walman** by using the steps in the [Walman Demo](#walman-demo) section.
 
 There are 4 components to **Walman**:
-1. Walman repository database
+1. Walman Repository database
 2. `wallet_test.sh`
 3. `walman.conf`
 4. `walman.py`
 
 **Step 1:**  
-To set up the **Walman** repository database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, create a schema named `WALMAN`, and then run the following to create the **Walman** repository tables in that schema.
+To set up the **Walman** Repository database, you will need to have an Oracle database up and running. Steps for how to install Oracle and create a database are outside the scope of this document. Once you have your database up and running, create a schema named `WALMAN`, and then run the following to create the **Walman** Repository tables in that schema.
 ```bash
 @walmandb_install.sql
 ```
-Refer to the [Walman Database ERD](https://github.com/twhalsema/walman/blob/main/README.md#walman-database-erd) to verify table structure.
+Refer to the [Walman Repository Database ERD](#walman-repository-database-erd) to verify table structure.
 
 **Step 2:**  
 Choose a server on which to run **Walman** (hereafter referred to as the **Walman Server**). This server will need to have the full Oracle client installed with access to `sqlplus` and `mkstore` utilities.
@@ -247,11 +262,11 @@ echo 'export OP_SERVICE_ACCOUNT_TOKEN=<your-1password-token>' >> ~/.bashrc
 ```
 
 **Step 8:**  
-[Run Walman](https://github.com/twhalsema/walman/edit/main/README.md#run-walman)
+[Run Walman](#run-walman)
 >**NOTE:** On the first run, you will be prompted to enter connection information for the **Walman** Repository database. An Oracle wallet will be generated based on the values you enter, and it will be stored in the `walman_wallet` sub-directory under the directory you specified for `local_wallets_directory` in the `walman.conf` file.
 
-## Walman Database ERD
-![Walman database ERD](/docimages/walman_erd.png)
+## Walman Repository Database ERD
+![Walman Repository Database ERD](/docimages/walman_erd.png)
 
 ## Run Walman
 To invoke `walman.py`, run the following:
